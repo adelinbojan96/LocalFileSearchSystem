@@ -1,6 +1,7 @@
 import os
 import time
 import mimetypes
+from database_handling import insert_file_to_db
 
 def get_metadata(filepath):
     #metadata used as dictionary
@@ -27,6 +28,7 @@ def index_files(src_filepath = "."):
     filepath_list = walk_files(src_filepath)
     for filepath in filepath_list:
         metadata = get_metadata(filepath)
+        insert_file_to_db(metadata, filepath)
 
 def walk_files(src_filepath="."):
     filepath_list = []
