@@ -8,28 +8,26 @@ from .serializer import FileSerializer
 from rest_framework.decorators import api_view
 from .search_algorithm import index_files, walk_files
 
-
 @api_view(['POST'])
 def search_file(request):
     try:
-        # Extract parameters with defaults
+        directory = r"D:\SoftwareDesign_Iteartion1_LocalFileSeachSystem\src\app\be_django\be_django\searchingDir"
+
+        #default parameters
         file_name = request.data.get('file_name', '').strip()
-        exact_match = request.data.get('exact_match', False)
-        page = int(request.data.get('page', 1))
-        page_size = int(request.data.get('page_size', 10))
+        exact_match = False # can get similar values as well or not (false or true)
+        page = 1
+        page_size = 25 # max size of files that it can find
 
         if not file_name:
             return JsonResponse({'error': 'No file name provided'}, status=400)
 
-        directory = r"D:\SoftwareDesign_Iteartion1_LocalFileSeachSystem\src\app\be_django\be_django\searchingDir"
-
         if not os.path.exists(directory):
             return JsonResponse({'error': 'Search directory not found'}, status=404)
 
-        # Get matching files with metadata
         results = index_files(directory, file_name, exact_match)
 
-        # Pagination
+        # pagination information
         total = len(results)
         start = (page - 1) * page_size
         end = start + page_size
@@ -48,7 +46,7 @@ def search_file(request):
 
 class FileListView(APIView):
     def get(self, request):
-        #basic example of files
+        # basic example of files
         files = [
             {'name': 'file1.txt', 'size': 1234, 'path': '/path/to/file1.txt'},
             {'name': 'file2.jpg', 'size': 5678, 'path': '/path/to/file2.jpg'}

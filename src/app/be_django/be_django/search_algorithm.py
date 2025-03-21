@@ -3,7 +3,6 @@ import time
 import mimetypes
 from .database_handling import insert_file_to_db
 
-
 def get_metadata(filepath):
     try:
         stats = os.stat(filepath)
@@ -33,7 +32,7 @@ def get_file_preview(filepath):
         return ''
 
 
-def index_files(src_filepath, search_term, exact_match=False):
+def index_files(src_filepath, search_term, exact_match):
     results = []
 
     for filepath in walk_files(src_filepath):
@@ -49,9 +48,7 @@ def index_files(src_filepath, search_term, exact_match=False):
             if metadata:
                 insert_file_to_db(filepath, metadata)
                 results.append(metadata)
-
     return results
-
 
 def walk_files(src_filepath):
     for root, _, files in os.walk(src_filepath):
