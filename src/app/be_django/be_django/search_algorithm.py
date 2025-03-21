@@ -1,41 +1,59 @@
 import os
 import time
 import mimetypes
-from database_handling import insert_file_to_db
+from .database_handling import insert_file_to_db
+
 
 def get_metadata(filepath):
-    #metadata used as dictionary
-    metadata = {'size': os.path.getsize(filepath), 'last_modified': time.ctime(os.path.getmtime(filepath)),
-                'creation_time': time.ctime(os.path.getctime(filepath))}
+    try:
+        stats = os.stat(filepath)
+        return {
+            'filename': os.path.basename(filepath),
+            'path': filepath,
+            'size': stats.st_size,  #bytes
+            'last_modified': stats.st_mtime,  #timestamp
+            'creation_time': stats.st_ctime,  #timestamp
+            'file_type': mimetypes.guess_type(filepath)[0] or 'unknown',
+            'preview': get_file_preview(filepath)
+        }
+    except Exception as e:
+        print(f"Metadata error for {filepath}: {str(e)}")
+        return None
 
-    file_type, _ = mimetypes.guess_type(filepath)
-    metadata['file_type'] = file_type if file_type else "unknown"
 
-    #text-based files will use extraction of the first 500 characters as content
-    if file_type and 'text' in file_type:
-        try:
-            with open(filepath, 'r', encoding='utf-u') as file:
-                content = file.read(500)
-                metadata['preview'] = content
-        except Exception as e:
-            print(f"Error reading file with the path {filepath}: {e}")
-    else:
-        metadata['preview'] = ''
+def get_file_preview(filepath):
+    try:
+        file_type = mimetypes.guess_type(filepath)[0]
+        if file_type and 'text' in file_type:
+            with open(filepath, 'r', encoding='utf-8', errors='ignore') as f:
+                return f.read(500)
+        return ''
+    except Exception as e:
+        print(f"Preview error for {filepath}: {str(e)}")
+        return ''
 
-    return metadata
 
-def index_files(src_filepath = "."):
-    filepath_list = walk_files(src_filepath)
-    for filepath in filepath_list:
-        metadata = get_metadata(filepath)
-        insert_file_to_db(metadata, filepath)
+def index_files(src_filepath, search_term, exact_match=False):
+    results = []
 
-def walk_files(src_filepath="."):
-    filepath_list = []
-    for root, dirs, files in os.walk(src_filepath):
+    for filepath in walk_files(src_filepath):
+        filename = os.path.basename(filepath)
+
+        if exact_match:
+            match = filename.lower() == search_term.lower()
+        else:
+            match = search_term.lower() in filename.lower()
+
+        if match:
+            metadata = get_metadata(filepath)
+            if metadata:
+                insert_file_to_db(filepath, metadata)
+                results.append(metadata)
+
+    return results
+
+
+def walk_files(src_filepath):
+    for root, _, files in os.walk(src_filepath):
         for file in files:
-            filepath = os.path.join(root, file)
-            filepath_list.append(filepath)
-
-    return filepath_list
-
+            yield os.path.join(root, file)
