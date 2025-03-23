@@ -34,6 +34,8 @@ def get_file_preview(filepath):
 
 def index_files(src_filepath, search_term, exact_match):
     results = []
+    search_words = search_term.lower().split() if not exact_match else []
+
 
     for filepath in walk_files(src_filepath):
         filename = os.path.basename(filepath)
@@ -41,7 +43,7 @@ def index_files(src_filepath, search_term, exact_match):
         if exact_match:
             match = filename.lower() == search_term.lower()
         else:
-            match = search_term.lower() in filename.lower()
+            match = any(word in filename for word in search_words) if search_words else search_term.lower() in filename
 
         if match:
             metadata = get_metadata(filepath)

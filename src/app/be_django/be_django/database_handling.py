@@ -5,8 +5,9 @@ import os
 
 
 def insert_file_to_db(filepath, metadata):
+    connection = None
+    cursor = None
     try:
-
         connection = mysql.connector.connect(
             host='localhost',
             user='root',
@@ -42,7 +43,9 @@ def insert_file_to_db(filepath, metadata):
             cursor.close()
             connection.close()
 
-def extract_file_from_db(file):
+def extract_file_from_db(file_name):
+    connection = None
+    cursor = None
     try:
         connection = mysql.connector.connect(
             host='localhost',
@@ -56,8 +59,9 @@ def extract_file_from_db(file):
             """
             SELECT * FROM file_info
             WHERE name = %s
+            LIMIT 1
             """,
-            file
+            (file_name,)
         )
         metadata = cursor.fetchone()
         return metadata
@@ -67,7 +71,7 @@ def extract_file_from_db(file):
         return None
 
     finally:
-        if 'cursor' in locals():
+        if cursor:
             cursor.close()
-        if 'connection' in locals() and connection.is_connected():
+        if connection and connection.is_connected():
             connection.close()

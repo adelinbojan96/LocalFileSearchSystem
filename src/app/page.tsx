@@ -17,7 +17,9 @@ type FileMetadata = {
 export default function Home() {
   const [fileName, setFileName] = useState("");
   const [results, setResults] = useState<FileMetadata[]>([]);
-  const [buttonClicked, setButtonClicked] = useState(false); 
+  const [buttonClicked, setButtonClicked] = useState(false);
+  const [exact_match, setExact_match] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<FileMetadata | null>(null);
 
   const handleInputChange = (e: { target: { value: SetStateAction<string> } }) => {
     setFileName(e.target.value);
@@ -26,8 +28,11 @@ export default function Home() {
   const handleSearchClick = async () => {
     if (fileName) {
       try {
+        setSelectedFile(null);
+
         const response = await axios.post("http://localhost:8000/api/search/", {
           file_name: fileName,
+          exact_match: exact_match,
         });
 
         setResults(response.data.results || []);
@@ -40,6 +45,32 @@ export default function Home() {
     } else {
       alert("Please enter a file name");
     }
+  };
+
+  const handleFilenameClick = async (file: FileMetadata) => {
+    try {
+      const response = await axios.get(`http://localhost:8000/api/files/${file.filename}/`);
+      setSelectedFile(response.data);
+    } catch (error) {
+      console.error("Error fetching metadata:", error);
+      setSelectedFile(null);
+    }
+  };
+
+  const handleDownload = () => {
+    if (!selectedFile) return;
+
+    const blob = new Blob([JSON.stringify(selectedFile, null, 2)], {
+      type: "application/json",
+    });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${selectedFile.filename}_metadata.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
   };
 
   return (
@@ -58,23 +89,39 @@ export default function Home() {
           Search
         </button>
 
-        {/* Not found */}
+        <div className="form-row" style={{ textAlign: "left" }}>
+          <label htmlFor="exact_match"> Exact Match </label>
+          <input
+            type="checkbox"
+            name="exact_match"
+            id="exact_match"
+            checked={exact_match}
+            onChange={(e) => setExact_match(e.target.checked)}
+          />
+        </div>
+
         {results.length === 0 && buttonClicked && (
           <div>
             <h2 style={{ color: "red" }}>Not found</h2>
           </div>
         )}
 
-        {/* Show results if any */}
         {results.length > 0 && (
           <div>
-            <h2 style={{ color: "green" }}>Found: {results.length} matching files</h2>
+            <h2 style={{ color: "green" }}>
+              Found {results.length === 1 ? "one matching file" : `${results.length} matching files`}
+            </h2>
             <h2>Search Results:</h2>
             <ul>
               {results.map((file, index) => (
                 <li key={index}>
                   <div className={styles.fileItem}>
-                    <strong>{file.filename}</strong>
+                    <strong
+                      className={styles.clickableFilename}
+                      onClick={() => handleFilenameClick(file)}
+                    >
+                      {file.filename}
+                    </strong>
                     <div>Path: {file.path}</div>
                     <div>Size: {Math.round(file.size / 1024)} KB</div>
                     <div>Type: {file.file_type}</div>
@@ -82,6 +129,25 @@ export default function Home() {
                 </li>
               ))}
             </ul>
+          </div>
+        )}
+
+        {selectedFile && (
+          <div className={styles.metadataPanel}>
+            <div className={styles.metadataContent}>
+              {selectedFile.preview && (
+                <div className={styles.previewSection}>
+                  <h3>Preview:</h3>
+                  <pre>{selectedFile.preview}</pre>
+                </div>
+              )}
+              <button
+                className={styles.downloadButton}
+                onClick={handleDownload}
+              >
+                Download Metadata
+              </button>
+            </div>
           </div>
         )}
       </main>

@@ -6,16 +6,17 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from .serializer import FileSerializer
 from rest_framework.decorators import api_view
-from .search_algorithm import index_files, walk_files
+from .search_algorithm import index_files
+from .database_handling import extract_file_from_db
 
 @api_view(['POST'])
 def search_file(request):
     try:
         directory = r"D:\SoftwareDesign_Iteartion1_LocalFileSeachSystem\src\app\be_django\be_django\searchingDir"
 
-        #default parameters
+        # default parameters
         file_name = request.data.get('file_name', '').strip()
-        exact_match = False # can get similar values as well or not (false or true)
+        exact_match = request.data.get('exact_match', False)
         page = 1
         page_size = 25 # max size of files that it can find
 
@@ -43,6 +44,17 @@ def search_file(request):
     except Exception as e:
         print(f"Search error: {str(e)}")
         return JsonResponse({'error': 'Internal server error'}, status=500)
+
+
+@api_view(['GET'])
+def get_file_metadata(request, file_name):
+    if not file_name:
+        return Response({'error': 'No file name provided'}, status=status.HTTP_400_BAD_REQUEST)
+    metadata = extract_file_from_db(file_name)
+    if metadata:
+        return Response(metadata, status=status.HTTP_200_OK)
+    else:
+        return Response({'error': 'File not found'}, status=status.HTTP_404_NOT_FOUND)
 
 class FileListView(APIView):
     def get(self, request):

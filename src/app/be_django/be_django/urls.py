@@ -2,7 +2,7 @@
 
 from django.contrib import admin
 from django.urls import path, include
-from .views import FileListView, ExampleView, search_file
+from .views import FileListView, ExampleView, search_file, get_file_metadata
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -10,4 +10,5 @@ urlpatterns = [
     path('api/example/', ExampleView.as_view(), name='example-api'),
     path('api/search/', search_file, name='search-file'),
     path('', FileListView.as_view(), name='home'),
+    path('api/files/<str:file_name>/', get_file_metadata, name='get_file_metadata')
 ]
