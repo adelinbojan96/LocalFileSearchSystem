@@ -7,13 +7,14 @@ from rest_framework.response import Response
 from .serializer import FileSerializer
 from rest_framework.decorators import api_view
 from .search_algorithm import index_files
-from .database_handling import extract_file_from_db
+from .database_handling import extract_file_from_db, restart_indexing_database
 
 @api_view(['POST'])
 def search_file(request):
     try:
-        directory = r"D:\SoftwareDesign_Iteartion1_LocalFileSeachSystem\src\app\be_django\be_django\searchingDir"
 
+        directory = request.data.get(
+            'directory_path') or r"D:\SoftwareDesign_Iteartion1_LocalFileSeachSystem\src\app\be_django\be_django\searchingDir"
         # default parameters
         file_name = request.data.get('file_name', '').strip()
         exact_match = request.data.get('exact_match', False)
@@ -55,6 +56,11 @@ def get_file_metadata(request, file_name):
         return Response(metadata, status=status.HTTP_200_OK)
     else:
         return Response({'error': 'File not found'}, status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['POST'])
+def restart_database(request):
+    restart_indexing_database()
+    return Response({'message': 'Database restarted'}, status=200)
 
 class FileListView(APIView):
     def get(self, request):

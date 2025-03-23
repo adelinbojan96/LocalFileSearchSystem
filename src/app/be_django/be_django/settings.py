@@ -79,12 +79,12 @@ WSGI_APPLICATION = "be_django.wsgi.application"
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',  # Use MySQL backend
-        'NAME': 'files',          # The name of your MySQL database
-        'USER': 'root',             # Your MySQL username
-        'PASSWORD': 'password',     # Your MySQL password
-        'HOST': 'localhost',                   # Change if your MySQL server is on a different host
-        'PORT': '3306',                        # MySQL default port
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'files',
+        'USER': 'root',
+        'PASSWORD': 'password',
+        'HOST': 'localhost',
+        'PORT': '3306',
     }
 }
 

@@ -52,6 +52,7 @@
   font-size: 18px;
   cursor: pointer;
   margin-top: -15px;
+  font-family: "Consolas";
 }
 
 .searchButton:hover {
@@ -99,13 +100,30 @@
   cursor: pointer;
   margin-top: 10px;
   transition: background-color 0.3s ease;
+  font-family: "Consolas";
 }
 
 .downloadButton:hover {
   background-color: #dfddda;
   color: #000;
 }
+.customDirectoryCheckboxRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
 
+.directoryInput {
+  padding: 8px 16px;
+  border-radius: 30px;
+  background-color: #cbc4bb;
+  color: rgb(43, 37, 37);
+  border: none;
+  font-size: 14px;
+  width: 100%;
+  max-width: 190px;
+}
 @media (prefers-color-scheme: dark) {
   .page {
     --gray-rgb: 255, 255, 255;

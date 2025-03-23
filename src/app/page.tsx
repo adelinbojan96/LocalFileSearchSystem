@@ -3,7 +3,6 @@ import styles from "./page.module.css";
 import { SetStateAction, useState } from "react";
 import axios from "axios";
 
-//types for the metadata
 type FileMetadata = {
   filename: string;
   path: string;
@@ -20,6 +19,8 @@ export default function Home() {
   const [buttonClicked, setButtonClicked] = useState(false);
   const [exact_match, setExact_match] = useState(false);
   const [selectedFile, setSelectedFile] = useState<FileMetadata | null>(null);
+  const [directoryPath, setDirectoryPath] = useState("");
+  const [useCustomDirectory, setUseCustomDirectory] = useState(false);
 
   const handleInputChange = (e: { target: { value: SetStateAction<string> } }) => {
     setFileName(e.target.value);
@@ -30,11 +31,13 @@ export default function Home() {
       try {
         setSelectedFile(null);
 
-        const response = await axios.post("http://localhost:8000/api/search/", {
+        const payload = {
           file_name: fileName,
           exact_match: exact_match,
-        });
+          directory_path: useCustomDirectory ? directoryPath : "",
+        };
 
+        const response = await axios.post("http://localhost:8000/api/search/", payload);
         setResults(response.data.results || []);
         setButtonClicked(true);
       } catch (error) {
@@ -59,10 +62,7 @@ export default function Home() {
 
   const handleDownload = () => {
     if (!selectedFile) return;
-
-    const blob = new Blob([JSON.stringify(selectedFile, null, 2)], {
-      type: "application/json",
-    });
+    const blob = new Blob([JSON.stringify(selectedFile, null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
@@ -72,12 +72,19 @@ export default function Home() {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
   };
-
+  
+  const handleRestartClick = async () => {
+    try {
+      const response = await axios.post("http://localhost:8000/api/restart/");
+      console.log(response.data.message);
+    } catch (error) {
+      console.error("Restart error:", error);
+    }
+  };
   return (
     <div className={styles.page}>
       <main className={styles.main}>
         <h1>Search a file locally</h1>
-
         <input
           type="text"
           placeholder="Enter file name"
@@ -90,7 +97,7 @@ export default function Home() {
         </button>
 
         <div className="form-row" style={{ textAlign: "left" }}>
-          <label htmlFor="exact_match"> Exact Match </label>
+          <label htmlFor="exact_match">Exact Match </label>
           <input
             type="checkbox"
             name="exact_match"
@@ -99,6 +106,40 @@ export default function Home() {
             onChange={(e) => setExact_match(e.target.checked)}
           />
         </div>
+
+        <div className={styles.customDirectory}>
+          <div className={styles.customDirectoryCheckboxRow}>
+            <label htmlFor="customDirectoryCheckbox">Custom Directory</label>
+            <input
+              type="checkbox"
+              id="customDirectoryCheckbox"
+              checked={useCustomDirectory}
+              onChange={(e) => {
+                const checked = e.target.checked;
+                setUseCustomDirectory(checked);
+              
+                if (!checked) {
+                  setDirectoryPath("");
+                }
+              }}
+            />
+          </div>
+          {useCustomDirectory && (
+            <input
+              type="text"
+              placeholder="provide the absolute path"
+              value={directoryPath}
+              onChange={(e) => setDirectoryPath(e.target.value)}
+              className={styles.directoryInput}
+            />
+          )}
+        </div>
+        
+        <div>
+          <strong className={styles.clickableFilename} onClick={() => handleRestartClick()}>
+            Restart Database
+          </strong>
+        </div>        
 
         {results.length === 0 && buttonClicked && (
           <div>
@@ -116,10 +157,7 @@ export default function Home() {
               {results.map((file, index) => (
                 <li key={index}>
                   <div className={styles.fileItem}>
-                    <strong
-                      className={styles.clickableFilename}
-                      onClick={() => handleFilenameClick(file)}
-                    >
+                    <strong className={styles.clickableFilename} onClick={() => handleFilenameClick(file)}>
                       {file.filename}
                     </strong>
                     <div>Path: {file.path}</div>
@@ -141,10 +179,7 @@ export default function Home() {
                   <pre>{selectedFile.preview}</pre>
                 </div>
               )}
-              <button
-                className={styles.downloadButton}
-                onClick={handleDownload}
-              >
+              <button className={styles.downloadButton} onClick={handleDownload}>
                 Download Metadata
               </button>
             </div>

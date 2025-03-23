@@ -3,7 +3,6 @@ from datetime import datetime
 import mysql.connector
 import os
 
-
 def insert_file_to_db(filepath, metadata):
     connection = None
     cursor = None
@@ -56,7 +55,7 @@ def extract_file_from_db(file_name):
         cursor = connection.cursor(dictionary=True)
 
         cursor.execute(
-            """
+    """
             SELECT * FROM file_info
             WHERE name = %s
             LIMIT 1
@@ -65,6 +64,37 @@ def extract_file_from_db(file_name):
         )
         metadata = cursor.fetchone()
         return metadata
+
+    except mysql.connector.Error as err:
+        print(f"Database error: {err}")
+        return None
+
+    finally:
+        if cursor:
+            cursor.close()
+        if connection and connection.is_connected():
+            connection.close()
+
+def restart_indexing_database():
+    connection = None
+    cursor = None
+    try:
+        connection = mysql.connector.connect(
+            host='localhost',
+            user='root',
+            password='password',
+            database='files'
+        )
+        cursor = connection.cursor(dictionary=True)
+
+        cursor.execute(
+            """ 
+                SET FOREIGN_KEY_CHECKS = 0; 
+                DELETE FROM file_info;
+                ALTER TABLE file_info AUTO_INCREMENT = 1;
+                SET FOREIGN_KEY_CHECKS = 1;
+            """
+        )
 
     except mysql.connector.Error as err:
         print(f"Database error: {err}")
