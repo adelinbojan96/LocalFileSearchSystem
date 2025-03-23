@@ -1,107 +1,50 @@
 from datetime import datetime
-
-import mysql.connector
 import os
+import logging
+from django.db import connection
+from .models import FileInfo
 
+
+logger = logging.getLogger(__name__)
 def insert_file_to_db(filepath, metadata):
-    connection = None
-    cursor = None
     try:
-        connection = mysql.connector.connect(
-            host='localhost',
-            user='root',
-            password='password',
-            database='files'
-        )
-        cursor = connection.cursor()
-
         last_modified = datetime.fromtimestamp(os.path.getmtime(filepath))
         creation_time = datetime.fromtimestamp(os.path.getctime(filepath))
-
-        cursor.execute("""
-            INSERT INTO file_info 
-                (name, path, type, size, last_modified, creation_time, preview)
-            VALUES (%s, %s, %s, %s, %s, %s, %s)
-        """, (
-            os.path.basename(filepath),
-            filepath,
-            metadata.get('file_type', 'unknown'),
-            metadata.get('size', 0),
-            last_modified,
-            creation_time,
-            metadata.get('preview', '')[:500]  # truncate in order to prevent overflow
-        ))
-
-        connection.commit()
-
-    except mysql.connector.Error as err:
-        print(f"Database error: {err}")
-        connection.rollback()
-    finally:
-        if 'connection' in locals() and connection.is_connected():
-            cursor.close()
-            connection.close()
+        file_info = FileInfo(
+            name=os.path.basename(filepath),
+            path=filepath,
+            type=metadata.get('file_type', 'unknown'),
+            size=metadata.get('size', 0),
+            last_modified=last_modified,
+            creation_time=creation_time,
+            preview=metadata.get('preview', '')[:500]
+        )
+        file_info.save()
+    except Exception as err:
+        logger.error("Database error in insert_file_to_db for %s: %s", filepath, err, exc_info=True)
 
 def extract_file_from_db(file_name):
-    connection = None
-    cursor = None
     try:
-        connection = mysql.connector.connect(
-            host='localhost',
-            user='root',
-            password='password',
-            database='files'
-        )
-        cursor = connection.cursor(dictionary=True)
-
-        cursor.execute(
-    """
-            SELECT * FROM file_info
-            WHERE name = %s
-            LIMIT 1
-            """,
-            (file_name,)
-        )
-        metadata = cursor.fetchone()
-        return metadata
-
-    except mysql.connector.Error as err:
-        print(f"Database error: {err}")
+        file_info = FileInfo.objects.filter(name=file_name).first()
+        if file_info:
+            return {
+                'filename': file_info.name,
+                'path': file_info.path,
+                'size': file_info.size,
+                'last_modified': file_info.last_modified,
+                'creation_time': file_info.creation_time,
+                'file_type': file_info.type,
+                'preview': file_info.preview,
+            }
         return None
-
-    finally:
-        if cursor:
-            cursor.close()
-        if connection and connection.is_connected():
-            connection.close()
+    except Exception as err:
+        logger.error("Database error in extract_file_from_db for file_name %s: %s", file_name, err, exc_info=True)
+        return None
 
 def restart_indexing_database():
-    connection = None
-    cursor = None
     try:
-        connection = mysql.connector.connect(
-            host='localhost',
-            user='root',
-            password='password',
-            database='files'
-        )
-        cursor = connection.cursor(dictionary=True)
-
-        cursor.execute(
-            """ 
-                SET FOREIGN_KEY_CHECKS = 0; 
-                DELETE FROM file_info;
-                ALTER TABLE file_info AUTO_INCREMENT = 1;
-                SET FOREIGN_KEY_CHECKS = 1;
-            """
-        )
-
-    except mysql.connector.Error as err:
-        print(f"Database error: {err}")
-        return None
-
-    finally:
-        if cursor:
-            cursor.close()
-        if connection and connection.is_connected():
-            connection.close()
+        FileInfo.objects.all().delete()
+        with connection.cursor() as cursor:
+            cursor.execute("ALTER TABLE file_info AUTO_INCREMENT = 1;")
+    except Exception as err:
+        logger.error("Database error in restart_indexing_database: %s", err, exc_info=True)

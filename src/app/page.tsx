@@ -84,7 +84,7 @@ export default function Home() {
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-        <h1>Search a file locally</h1>
+        <h1>Search files locally</h1>
         <input
           type="text"
           placeholder="Enter file name"
