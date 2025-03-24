@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "rest_framework",
     'corsheaders',
     'be_django',
+    "django_mysql",
 ]
 
 MIDDLEWARE = [

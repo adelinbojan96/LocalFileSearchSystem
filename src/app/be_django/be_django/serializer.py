@@ -1,5 +1,4 @@
 from datetime import datetime
-
 from rest_framework import serializers
 
 class TimestampField(serializers.Field):
@@ -16,7 +15,7 @@ class FileSerializer(serializers.Serializer):
     path = serializers.CharField(max_length=1024)
 
 class ItemSerializer(serializers.Serializer):
-    filename = serializers.CharField(max_length=255)
+    name = serializers.CharField(max_length=255)
     path = serializers.CharField(max_length=1024)
     type = serializers.CharField(max_length=255, default='unknown')
     size = serializers.IntegerField()

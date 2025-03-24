@@ -4,7 +4,7 @@ import { SetStateAction, useState } from "react";
 import axios from "axios";
 
 type FileMetadata = {
-  filename: string;
+  name: string;
   path: string;
   size: number;
   last_modified: string;
@@ -52,7 +52,7 @@ export default function Home() {
 
   const handleFilenameClick = async (file: FileMetadata) => {
     try {
-      const response = await axios.get(`http://localhost:8000/api/files/${file.filename}/`);
+      const response = await axios.get(`http://localhost:8000/api/files/${file.name}/`);
       setSelectedFile(response.data);
     } catch (error) {
       console.error("Error fetching metadata:", error);
@@ -66,7 +66,7 @@ export default function Home() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `${selectedFile.filename}_metadata.json`;
+    a.download = `${selectedFile.name}_metadata.json`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -158,7 +158,7 @@ export default function Home() {
                 <li key={index}>
                   <div className={styles.fileItem}>
                     <strong className={styles.clickableFilename} onClick={() => handleFilenameClick(file)}>
-                      {file.filename}
+                      {file.name}
                     </strong>
                     <div>Path: {file.path}</div>
                     <div>Size: {Math.round(file.size / 1024)} KB</div>

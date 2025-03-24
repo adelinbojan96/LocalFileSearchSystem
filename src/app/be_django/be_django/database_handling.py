@@ -3,13 +3,55 @@ import os
 import logging
 from django.db import connection
 from .models import FileInfo
-
+from django.utils import timezone
 
 logger = logging.getLogger(__name__)
+
+def exact_search(search_item):
+    try:
+        with connection.cursor() as cursor:
+            sql = """
+                SELECT name, path, size, last_modified, creation_time, type, preview
+                FROM file_info
+                WHERE name = %s  
+                LIMIT 1;
+            """
+            cursor.execute(sql, [search_item])
+            row = cursor.fetchone()
+            if row:
+                columns = [col[0] for col in cursor.description]
+                return dict(zip(columns, row))
+            return None
+    except Exception as e:
+        logger.error("Exact search failed: %s", e, exc_info=True)
+        return None
+
+def fulltext_search(search_query, limit=50):
+    try:
+        with connection.cursor() as cursor:
+            sql = """
+                SELECT name, path, size, last_modified, creation_time, type, preview
+                FROM file_info
+                WHERE MATCH(name, preview) AGAINST (%s IN NATURAL LANGUAGE MODE)
+                LIMIT %s;
+            """
+            cursor.execute(sql, [search_query, limit])
+            rows = cursor.fetchall()
+            columns = [col[0] for col in cursor.description]
+            return [dict(zip(columns, row)) for row in rows]
+    except Exception as e:
+        logger.error("Full-text search failed: %s", e, exc_info=True)
+        return []
+
 def insert_file_to_db(filepath, metadata):
     try:
-        last_modified = datetime.fromtimestamp(os.path.getmtime(filepath))
-        creation_time = datetime.fromtimestamp(os.path.getctime(filepath))
+        last_modified = timezone.make_aware(
+            datetime.fromtimestamp(os.path.getmtime(filepath))
+        )
+        creation_time = timezone.make_aware(
+            datetime.fromtimestamp(os.path.getctime(filepath))
+        )
+
         file_info = FileInfo(
             name=os.path.basename(filepath),
             path=filepath,

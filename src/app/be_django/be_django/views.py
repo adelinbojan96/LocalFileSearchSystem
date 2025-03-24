@@ -20,11 +20,10 @@ def search_file(request):
             'directory_path'
         ) or r"D:\SoftwareDesign_Iteartion1_LocalFileSeachSystem\src\app\be_django\be_django\searchingDir"
 
-        # default params
         file_name = request.data.get('file_name', '').strip()
         exact_match = request.data.get('exact_match', False)
         page = 1
-        page_size = 25  # max size of files that it can find
+        page_size = 25
 
         if not file_name:
             logger.warning("search attempted without a file name provided.")
@@ -32,21 +31,26 @@ def search_file(request):
 
         if not os.path.exists(directory):
             logger.error("search directory not found: %s", directory)
-            return JsonResponse({'error': 'Search directory not found'}, status=404)
+            return JsonResponse({'error': 'Search directory not found'}, status=400)
 
         try:
             results = index_files(directory, file_name, exact_match)
+
+            if results is None:
+                results = []
+            elif isinstance(results, dict):
+                results = [results]
+
         except Exception as inner_exc:
             logger.error("error indexing files in %s: %s", directory, inner_exc, exc_info=True)
             return JsonResponse({'error': 'Error processing search'}, status=500)
 
-        # pagination information
+        # pagination
         total = len(results)
         start = (page - 1) * page_size
         end = start + page_size
         paginated_results = results[start:end]
 
-        # creation of the txt file
         update_file(results)
 
         return JsonResponse({
@@ -82,7 +86,6 @@ def get_file_metadata(request, file_name):
         logger.error("unexpected error in get_file_metadata: %s", e, exc_info=True)
         return Response({'error': 'Internal server error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-
 @api_view(['POST'])
 def restart_database(request):
     try:
@@ -91,7 +94,6 @@ def restart_database(request):
     except Exception as e:
         logger.error("error restarting database: %s", e, exc_info=True)
         return Response({'error': 'Internal server error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
 
 class FileListView(APIView):
     def get(self, request):

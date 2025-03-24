@@ -1,7 +1,8 @@
 import os
 import time
 import mimetypes
-from .database_handling import insert_file_to_db
+from .database_handling import insert_file_to_db, restart_indexing_database, fulltext_search, exact_search
+
 
 def get_metadata(filepath):
     try:
@@ -19,7 +20,6 @@ def get_metadata(filepath):
         print(f"Metadata error for {filepath}: {str(e)}")
         return None
 
-
 def get_file_preview(filepath):
     try:
         file_type = mimetypes.guess_type(filepath)[0]
@@ -33,23 +33,22 @@ def get_file_preview(filepath):
 
 
 def index_files(src_filepath, search_term, exact_match):
-    results = []
-    search_words = search_term.lower().split() if not exact_match else []
 
+    restart_indexing_database()
 
+    search_query = search_term.lower() if exact_match else ' '.join(search_term.lower().split())
+    print(search_query)
+    # insertion
     for filepath in walk_files(src_filepath):
-        filename = os.path.basename(filepath)
+        metadata = get_metadata(filepath)
+        if metadata:
+            insert_file_to_db(filepath, metadata)
 
-        if exact_match:
-            match = filename.lower() == search_term.lower()
-        else:
-            match = any(word in filename for word in search_words) if search_words else search_term.lower() in filename
-
-        if match:
-            metadata = get_metadata(filepath)
-            if metadata:
-                insert_file_to_db(filepath, metadata)
-                results.append(metadata)
+    # retrieve
+    if not exact_match:
+        results = fulltext_search(search_query)
+    else:
+        results = exact_search(search_term)
     return results
 
 def walk_files(src_filepath):
