@@ -9,7 +9,7 @@ type FileMetadata = {
   size: number;
   last_modified: string;
   creation_time: string;
-  file_type: string;
+  type: string;
   preview: string;
 };
 
@@ -72,7 +72,7 @@ export default function Home() {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
   };
-  
+  /*
   const handleRestartClick = async () => {
     try {
       const response = await axios.post("http://localhost:8000/api/restart/");
@@ -81,6 +81,7 @@ export default function Home() {
       console.error("Restart error:", error);
     }
   };
+  */
   return (
     <div className={styles.page}>
       <main className={styles.main}>
@@ -135,11 +136,6 @@ export default function Home() {
           )}
         </div>
         
-        <div>
-          <strong className={styles.clickableFilename} onClick={() => handleRestartClick()}>
-            Restart Database
-          </strong>
-        </div>        
 
         {results.length === 0 && buttonClicked && (
           <div>
@@ -162,7 +158,7 @@ export default function Home() {
                     </strong>
                     <div>Path: {file.path}</div>
                     <div>Size: {Math.round(file.size / 1024)} KB</div>
-                    <div>Type: {file.file_type}</div>
+                    <div>Type: {file.type}</div>
                   </div>
                 </li>
               ))}

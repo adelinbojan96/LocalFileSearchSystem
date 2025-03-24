@@ -10,9 +10,9 @@ def get_metadata(filepath):
         return {
             'filename': os.path.basename(filepath),
             'path': filepath,
-            'size': stats.st_size,  #bytes
-            'last_modified': stats.st_mtime,  #timestamp
-            'creation_time': stats.st_ctime,  #timestamp
+            'size': stats.st_size,  # bytes
+            'last_modified': stats.st_mtime,  # timestamp
+            'creation_time': stats.st_ctime,  # timestamp
             'file_type': mimetypes.guess_type(filepath)[0] or 'unknown',
             'preview': get_file_preview(filepath)
         }
