@@ -22,8 +22,6 @@ def search_file(request):
 
         file_name = request.data.get('file_name', '').strip()
         exact_match = request.data.get('exact_match', False)
-        page = 1
-        page_size = 25
 
         if not file_name:
             logger.warning("search attempted without a file name provided.")
@@ -45,19 +43,10 @@ def search_file(request):
             logger.error("error indexing files in %s: %s", directory, inner_exc, exc_info=True)
             return JsonResponse({'error': 'Error processing search'}, status=500)
 
-        # pagination
-        total = len(results)
-        start = (page - 1) * page_size
-        end = start + page_size
-        paginated_results = results[start:end]
-
         update_file(results)
 
         return JsonResponse({
-            'total_results': total,
-            'page': page,
-            'page_size': page_size,
-            'results': paginated_results
+            'results': results
         })
 
     except Exception as e:

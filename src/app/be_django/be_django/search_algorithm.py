@@ -1,5 +1,4 @@
 import os
-import time
 import mimetypes
 from .database_handling import insert_file_to_db, restart_indexing_database, fulltext_search, exact_search
 
@@ -30,7 +29,6 @@ def get_file_preview(filepath):
     except Exception as e:
         print(f"Preview error for {filepath}: {str(e)}")
         return ''
-
 
 def index_files(src_filepath, search_term, exact_match):
 

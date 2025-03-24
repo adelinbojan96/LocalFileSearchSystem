@@ -1,5 +1,3 @@
-import os
-
 from .serializer import ItemSerializer
 import json
 
