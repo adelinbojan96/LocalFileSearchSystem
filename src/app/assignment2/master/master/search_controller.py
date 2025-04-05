@@ -29,6 +29,7 @@ def aggregate_results(query, dir_path):
             'files': file_chunks[i],
         }
         try:
+            # here it should ask the slaves to search
             response = requests.post(url, json=payload, timeout=10)
             if response.status_code == 200:
                 slave_results = response.json().get('results', [])
@@ -54,7 +55,7 @@ def search_files(request):
     if cached_results:
         return JsonResponse({'results': cached_results, 'cached': True})
 
-    dir_path = "D:\SoftwareDesign_Iteartion1_LocalFileSeachSystem\src\app\assignment2\documents_to_search"
+    dir_path = r'D:\SoftwareDesign_Iteartion1_LocalFileSeachSystem\src\app\assignment2\documents_to_search'
 
     results = aggregate_results(query, dir_path)
 

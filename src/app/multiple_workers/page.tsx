@@ -1,5 +1,5 @@
 "use client";
-import styles from "../page.module.css";
+import styles from "./page.module.css";
 import { SetStateAction, useState } from "react";
 import axios from "axios";
 
@@ -40,7 +40,7 @@ export default function Home() {
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-        <h1>Use multiple workers and a master</h1>
+        <h1>Use multiple workers for search</h1>
         <input
           type="text"
           placeholder="Enter file name"
@@ -55,8 +55,5 @@ export default function Home() {
       </main>
     </div>
   );
-}
-function setResults(arg0: never[]) {
-    throw new Error("Function not implemented.");
 }
 

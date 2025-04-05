@@ -1,15 +1,21 @@
-from django.http import JsonResponse
 import os
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
-def search_files(query, root_dir):
-    matches = []
-    for root, dirs, files in os.walk(root_dir):
-        for file in files:
-            if query.lower() in file.lower():
-                matches.append(os.path.join(root, file))
-    return matches
-
-def search(request, root_dir):
-    query = request.GET.get('query', '')
-    results = search_files(query, root_dir)
-    return JsonResponse({'results': results})
+@api_view(["GET"])
+def worker_search(request):
+    query = request.data.get('query', '').strip()
+    files = request.data.get('files', [])
+    results = []
+    for file_path in files:
+        file_name = os.path.basename(file_path)
+        if query.lower() in file_name.lower():
+            results.append({
+                'name': file_name,
+                'path': file_path,
+                'size': os.path.getsize(file_path),
+                'last_modified': os.path.getmtime(file_path),
+                'creation_time': os.path.getctime(file_path),
+                'type': os.path.splitext(file_name)[1] or 'unknown',
+            })
+    return Response({'results': results})

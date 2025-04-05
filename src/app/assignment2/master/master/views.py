@@ -1,25 +1,9 @@
 import os
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from .search_controller import search_files
 
-@api_view(["POST"])
-def worker_search(request):
-    query = request.data.get('query', '').strip()
-    files = request.data.get('files', [])
-    results = []
+@api_view(["GET"])
+def master_search(request):
+    return search_files(request)
 
-    for file_path in files:
-        file_name = os.path.basename(file_path)
-        file_extension = os.path.splitext(file_name)[1]
-
-        if query.lower() in file_name.lower():
-            results.append({
-                'name': file_name,
-                'path': file_path,
-                'size': os.path.getsize(file_path),
-                'last_modified': os.path.getmtime(file_path),
-                'creation_time': os.path.getctime(file_path),
-                'type': file_extension if file_extension else 'unknown',
-            })
-
-    return Response({'results': results})

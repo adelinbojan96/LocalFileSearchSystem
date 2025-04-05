@@ -17,9 +17,9 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path
-from .views import search
+from .views import worker_search
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path('api/search/', search, name='search'),
+    path('api/search/', worker_search, name='search'),
 ]
