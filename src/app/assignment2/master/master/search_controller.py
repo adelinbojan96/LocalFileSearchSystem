@@ -19,14 +19,17 @@ def split_into_chunks(dir_path, num_chunks=3):
     chunk_size = len(all_files) // num_chunks
     return [all_files[i:i + chunk_size] for i in range(0, len(all_files), chunk_size)]
 
-def aggregate_results(query, dir_path):
+def aggregate_results(query, dir_paths):
 
-    file_chunks = split_into_chunks(dir_path)
+    #file_chunks = split_into_chunks(dir_paths)
     results = []
+
     for i, url in enumerate(SLAVE_URLS):
+        dir_path = dir_paths[i]
+        files = [os.path.join(dir_path, f) for f in os.listdir(dir_path)]
         payload = {
             'query': query,
-            'files': file_chunks[i],
+            'files': files,
         }
         try:
             # here it should ask the slaves to search
@@ -55,9 +58,12 @@ def search_files(request):
     if cached_results:
         return JsonResponse({'results': cached_results, 'cached': True})
 
-    dir_path = r'D:\SoftwareDesign_Iteartion1_LocalFileSeachSystem\src\app\assignment2\documents_to_search'
-
-    results = aggregate_results(query, dir_path)
+    dir_paths = [
+        r'D:\SoftwareDesign_Iteartion1_LocalFileSeachSystem\src\app\assignment2\documents_to_search',
+        r'D:\SoftwareDesign_Iteartion1_LocalFileSeachSystem\src\app\assignment2\documents_to_search2',
+        r'D:\SoftwareDesign_Iteartion1_LocalFileSeachSystem\src\app\assignment2\documents_to_search3',
+    ]
+    results = aggregate_results(query, dir_paths)
 
     ranked_results = rank_results(results, query)
 
