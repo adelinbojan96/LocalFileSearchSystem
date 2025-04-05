@@ -10,7 +10,7 @@ slave_processes = []
 
 for config in slave_configs:
     process = subprocess.Popen([
-        "python", "worker_app.py",
+        "python", "../../slave_1/slave_1/worker_run.py",
         "-p", str(config["port"]),
         "-b", config["base_directory"],
         "-s", str(config["server_id"]),

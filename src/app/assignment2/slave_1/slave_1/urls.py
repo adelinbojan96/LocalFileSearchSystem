@@ -17,7 +17,7 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path
-from .views import worker_search
+from .worker_run import worker_search
 
 urlpatterns = [
     path("admin/", admin.site.urls),
