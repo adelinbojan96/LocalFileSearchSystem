@@ -11,11 +11,11 @@ SLAVE_URLS = [
     'http://localhost:8003/api/search/',
 ]
 def home(request):
-    return HttpResponse("Master Server. Correct command would be /search/?query=WORD.")
+    return HttpResponse("Master Server. Write /search/?query=WORD.")
 
 # splitting the work in 3 since we have 3 servers
-def split_into_chunks(dir_path, num_chunks = 3):
-    all_files = os.listdir(dir_path)
+def split_into_chunks(dir_path, num_chunks=3):
+    all_files = [os.path.join(dir_path, f) for f in os.listdir(dir_path)]
     chunk_size = len(all_files) // num_chunks
     return [all_files[i:i + chunk_size] for i in range(0, len(all_files), chunk_size)]
 
@@ -40,8 +40,8 @@ def aggregate_results(query, dir_path):
 
 # exact matches
 def rank_results(results, query):
-    matches = [r for r in results if query.lower() in r.lower()]
-    sorted_results = sorted(matches, key=lambda x: x.lower() == query.lower(), reverse=True)
+    matches = [r for r in results if query.lower() in r.get('name', '').lower()]
+    sorted_results = sorted(matches, key=lambda r: r.get('name', '').lower() == query.lower(), reverse=True)
     return sorted_results
 
 def search_files(request):

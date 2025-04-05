@@ -2,7 +2,7 @@ import os
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-@api_view(["GET"])
+@api_view(["POST"])
 def worker_search(request):
     query = request.data.get('query', '').strip()
     files = request.data.get('files', [])
@@ -11,6 +11,7 @@ def worker_search(request):
         file_name = os.path.basename(file_path)
         if query.lower() in file_name.lower():
             results.append({
+                'server' : 1,
                 'name': file_name,
                 'path': file_path,
                 'size': os.path.getsize(file_path),
