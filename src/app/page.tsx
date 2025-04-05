@@ -72,16 +72,6 @@ export default function Home() {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
   };
-  /*
-  const handleRestartClick = async () => {
-    try {
-      const response = await axios.post("http://localhost:8000/api/restart/");
-      console.log(response.data.message);
-    } catch (error) {
-      console.error("Restart error:", error);
-    }
-  };
-  */
   return (
     <div className={styles.page}>
       <main className={styles.main}>
@@ -181,6 +171,14 @@ export default function Home() {
             </div>
           </div>
         )}
+        {/* Assignment 2 */}
+        <div>
+          <p
+            className={styles.clickableFilename}
+            onClick={() => window.location.href = "/multiple_workers"}>
+            MultipleWorkers Mode
+          </p>
+        </div>
       </main>
     </div>
   );
