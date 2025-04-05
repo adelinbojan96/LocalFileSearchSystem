@@ -1,4 +1,5 @@
 import subprocess
+import time
 
 slave_configs = [
     {"port": 8001, "server_id": 1, "base_directory": r"D:\SoftwareDesign_Iteartion1_LocalFileSeachSystem\src\app\assignment2\documents_to_search"},
@@ -16,3 +17,5 @@ for config in slave_configs:
         "-s", str(config["server_id"]),
     ])
     slave_processes.append(process)
+
+master_process = subprocess.Popen(["python", "../manage.py", "runserver", "8000"])
