@@ -3,5 +3,6 @@
   <component name="SqlDialectMappings">
     <file url="file://$PROJECT_DIR$/be_django/database_handling.py" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/be_django/migrations/0001_add_fulltext_index.py" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/be_django/search_algorithm.py" dialect="GenericSQL" />
   </component>
 </project>

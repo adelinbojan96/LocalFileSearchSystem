@@ -1,5 +1,6 @@
 import os
 import logging
+import re
 
 from django.http import JsonResponse
 from rest_framework import status
@@ -7,7 +8,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from .serializer import FileSerializer
-from .search_algorithm import index_files
+from .search_algorithm import index_files, extract_path_filters, extract_content_filters
 from .database_handling import extract_file_from_db, restart_indexing_database
 from .report_creator import update_file
 
@@ -16,41 +17,53 @@ logger = logging.getLogger(__name__)
 @api_view(['POST'])
 def search_file(request):
     try:
-        directory = request.data.get(
-            'directory_path'
-        ) or r"D:\SoftwareDesign_Iteartion1_LocalFileSeachSystem\src\app\be_django\be_django\searchingDir"
-
-        file_name = request.data.get('file_name', '').strip()
+        raw_query = request.data.get('file_name', '').strip()
         exact_match = request.data.get('exact_match', False)
+        path_filters = extract_path_filters(raw_query)
+        content_filters = extract_content_filters(raw_query)
 
-        if not file_name:
-            logger.warning("search attempted without a file name provided.")
+        if path_filters:
+            directories = path_filters
+        else:
+            dir_from_req = request.data.get('directory_path')
+            if dir_from_req:
+                directories = [dir_from_req]
+            else:
+                directories = [r"D:\SoftwareDesign_Iteartion1_LocalFileSeachSystem\src\app\be_django\be_django\searchingDir"]
+
+        if not raw_query:
+            logger.warning("Search attempted without a file name provided.")
             return JsonResponse({'error': 'No file name provided'}, status=400)
 
-        if not os.path.exists(directory):
-            logger.error("search directory not found: %s", directory)
-            return JsonResponse({'error': 'Search directory not found'}, status=400)
+        all_results = []
+        clean_search_term = re.sub(r'(path|content):\S+', '', raw_query).strip()
 
-        try:
-            results = index_files(directory, file_name, exact_match)
+        for directory in directories:
+            if not os.path.exists(directory):
+                logger.error("Search directory not found: %s", directory)
+                continue
 
-            if results is None:
-                results = []
-            elif isinstance(results, dict):
-                results = [results]
+            try:
+                results = index_files(directory, clean_search_term, exact_match, content_filters)
+                print(results)
+                if results is None:
+                    results = []
+                elif isinstance(results, dict):
+                    results = [results]
+                all_results.extend(results)
 
-        except Exception as inner_exc:
-            logger.error("error indexing files in %s: %s", directory, inner_exc, exc_info=True)
-            return JsonResponse({'error': 'Error processing search'}, status=500)
+            except Exception as inner_exc:
+                logger.error("Error indexing files in %s: %s", directory, inner_exc, exc_info=True)
+                return JsonResponse({'error': 'Error processing search'}, status=500)
 
-        update_file(results)
+        update_file(all_results)
 
         return JsonResponse({
-            'results': results
+            'results': all_results
         })
 
     except Exception as e:
-        logger.error("search error: %s", e, exc_info=True)
+        logger.error("Search error: %s", e, exc_info=True)
         return JsonResponse({'error': 'Internal server error'}, status=500)
 
 @api_view(['GET'])

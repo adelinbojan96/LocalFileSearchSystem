@@ -10,6 +10,12 @@ SLAVE_URLS = [
     'http://localhost:8002/api/search/',
     'http://localhost:8003/api/search/',
 ]
+
+dir_paths = [
+    r'D:\SoftwareDesign_Iteartion1_LocalFileSeachSystem\src\app\assignment2\documents_to_search',
+    r'D:\SoftwareDesign_Iteartion1_LocalFileSeachSystem\src\app\assignment2\documents_to_search2',
+    r'D:\SoftwareDesign_Iteartion1_LocalFileSeachSystem\src\app\assignment2\documents_to_search3',
+]
 def home(request):
     return HttpResponse("Master Server. Write /search/?query=WORD.")
 
@@ -58,11 +64,6 @@ def search_files(request):
     if cached_results:
         return JsonResponse({'results': cached_results, 'cached': True})
 
-    dir_paths = [
-        r'D:\SoftwareDesign_Iteartion1_LocalFileSeachSystem\src\app\assignment2\documents_to_search',
-        r'D:\SoftwareDesign_Iteartion1_LocalFileSeachSystem\src\app\assignment2\documents_to_search2',
-        r'D:\SoftwareDesign_Iteartion1_LocalFileSeachSystem\src\app\assignment2\documents_to_search3',
-    ]
     results = aggregate_results(query, dir_paths)
 
     ranked_results = rank_results(results, query)

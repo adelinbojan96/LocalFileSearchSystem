@@ -7,18 +7,18 @@ import axios from "axios";
 export default function Home() {
   const [fileName, setFileName] = useState("");
     const [results, setResults] = useState<any[]>([]);
-    const [buttonClicked, setButtonClicked] = useState(false);
+    //const [buttonClicked, setButtonClicked] = useState(false);
 
   const handleInputChange = (e: { target: { value: SetStateAction<string> } }) => {
     setFileName(e.target.value);
   };
 
     const handleSearchClick = async () => {
-        setButtonClicked(true);
+        //setButtonClicked(true);
         if (fileName) {
             try {
             const response = await axios.get("http://localhost:8000/api/search/", {
-                params: { query: fileName },
+                params: { query: encodeURIComponent(fileName) },
             });
             //display on the console
             console.log("Results:", response.data.results);

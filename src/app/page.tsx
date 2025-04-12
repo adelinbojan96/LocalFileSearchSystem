@@ -125,7 +125,14 @@ export default function Home() {
             />
           )}
         </div>
-        
+        {/* Assignment 2 */}
+        <div>
+          <p
+              className={styles.clickableFilename}
+              onClick={() => window.location.href = "/multiple_workers"}>
+            MultipleWorkers Mode
+          </p>
+        </div>
 
         {results.length === 0 && buttonClicked && (
           <div>
@@ -171,14 +178,7 @@ export default function Home() {
             </div>
           </div>
         )}
-        {/* Assignment 2 */}
-        <div>
-          <p
-            className={styles.clickableFilename}
-            onClick={() => window.location.href = "/multiple_workers"}>
-            MultipleWorkers Mode
-          </p>
-        </div>
+
       </main>
     </div>
   );

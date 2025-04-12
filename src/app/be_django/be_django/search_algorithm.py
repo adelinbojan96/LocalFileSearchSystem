@@ -1,7 +1,45 @@
 import os
 import mimetypes
 from .database_handling import insert_file_to_db, restart_indexing_database, fulltext_search, exact_search
+import re
 
+def extract_path_filters(query: str):
+    matches = re.findall(r'\bpath:(?:"([^"]+)"|(\S+))', query, re.IGNORECASE)
+    return [quoted or unquoted for quoted, unquoted in matches if quoted or unquoted]
+
+def extract_content_filters(query: str) -> list[str]:
+    matches = re.findall(r'\bcontent:(?:"([^"]+)"|(\S+))', query, re.IGNORECASE)
+    return [quoted or unquoted for quoted, unquoted in matches]
+
+
+def build_search_query(path_filters: list[str], content_filters: list[str]):
+    conditions = []
+    params = []
+
+    if path_filters:
+        path_conditions = []
+        for path in path_filters:
+            path_conditions.append("path LIKE %s")
+            params.append(f"%{path}%")
+        conditions.append(f"({' AND '.join(path_conditions)})")
+
+    if content_filters:
+        content_conditions = []
+        for content in content_filters:
+            content_conditions.append("MATCH(preview) AGAINST (%s IN BOOLEAN MODE)")
+            params.append(f"+{content}")
+        conditions.append(f"({' AND '.join(content_conditions)})")
+
+    where_clause = " AND ".join(conditions) if conditions else "1=1"
+
+    query = f"""
+        SELECT name, path, size, last_modified, creation_time, type, preview
+        FROM file_info
+        WHERE {where_clause}
+        LIMIT 100
+    """
+
+    return query, params
 
 def get_metadata(filepath):
     try:
@@ -9,9 +47,9 @@ def get_metadata(filepath):
         return {
             'filename': os.path.basename(filepath),
             'path': filepath,
-            'size': stats.st_size,  # bytes
-            'last_modified': stats.st_mtime,  # timestamp
-            'creation_time': stats.st_ctime,  # timestamp
+            'size': stats.st_size,
+            'last_modified': stats.st_mtime,
+            'creation_time': stats.st_ctime,
             'file_type': mimetypes.guess_type(filepath)[0] or 'unknown',
             'preview': get_file_preview(filepath)
         }
@@ -30,24 +68,18 @@ def get_file_preview(filepath):
         print(f"Preview error for {filepath}: {str(e)}")
         return ''
 
-def index_files(src_filepath, search_term, exact_match):
-
+def index_files(src_filepath, search_term, exact_match, content_filters):
     restart_indexing_database()
-
-    search_query = search_term.lower() if exact_match else ' '.join(search_term.lower().split())
-    print(search_query)
-    # insertion
     for filepath in walk_files(src_filepath):
         metadata = get_metadata(filepath)
         if metadata:
             insert_file_to_db(filepath, metadata)
 
-    # retrieve
-    if not exact_match:
-        results = fulltext_search(search_query)
+    if exact_match:
+        clean_name = re.sub(r'(path|content):\S+', '', search_term).strip()
+        return exact_search(clean_name, content_filters)
     else:
-        results = exact_search(search_term)
-    return results
+        return fulltext_search(search_term, content_filters)
 
 def walk_files(src_filepath):
     for root, _, files in os.walk(src_filepath):

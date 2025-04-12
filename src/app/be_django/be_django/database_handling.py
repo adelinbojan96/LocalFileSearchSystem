@@ -7,38 +7,63 @@ from django.utils import timezone
 
 logger = logging.getLogger(__name__)
 
-def exact_search(search_item):
+def exact_search(search_item, content_filters):
     try:
         with connection.cursor() as cursor:
             sql = """
                 SELECT name, path, size, last_modified, creation_time, type, preview
                 FROM file_info
-                WHERE name = %s  
-                LIMIT 1;
+                WHERE name = %s
             """
-            cursor.execute(sql, [search_item])
+            params = [search_item]
+
+            if content_filters:
+                sql += " AND MATCH(preview) AGAINST (%s IN BOOLEAN MODE)"
+                params.append(" ".join(f"+{term}" for term in content_filters))
+
+            sql += " LIMIT 1;"
+
+            cursor.execute(sql, params)
             row = cursor.fetchone()
             if row:
-                columns = [col[0] for col in cursor.description]
-                return dict(zip(columns, row))
+                return dict(zip([col[0] for col in cursor.description], row))
             return None
     except Exception as e:
         logger.error("Exact search failed: %s", e, exc_info=True)
         return None
 
-def fulltext_search(search_query, limit=50):
+def fulltext_search(search_query, content_filters, limit=50):
     try:
         with connection.cursor() as cursor:
+            conditions = []
+            params = []
+
+            if search_query.strip():
+                conditions.append("MATCH(name, preview) AGAINST (%s IN NATURAL LANGUAGE MODE)")
+                params.append(search_query)
+
+            if content_filters:
+                conditions.append("MATCH(preview) AGAINST (%s IN BOOLEAN MODE)")
+                params.append(" ".join(f"+{term}" for term in content_filters))
+
             sql = """
-                SELECT name, path, size, last_modified, creation_time, type, preview
+                SELECT
+                    name, path, size, last_modified, creation_time, type, preview
                 FROM file_info
-                WHERE MATCH(name, preview) AGAINST (%s IN NATURAL LANGUAGE MODE)
-                LIMIT %s;
             """
-            cursor.execute(sql, [search_query, limit])
-            rows = cursor.fetchall()
-            columns = [col[0] for col in cursor.description]
-            return [dict(zip(columns, row)) for row in rows]
+
+            if conditions:
+                sql += " WHERE " + " AND ".join(conditions)
+
+            sql += " LIMIT %s;"
+            params.append(limit)
+
+            cursor.execute(sql, params)
+
+            return [
+                dict(zip([col[0] for col in cursor.description], row))
+                for row in cursor.fetchall()
+            ]
     except Exception as e:
         logger.error("Full-text search failed: %s", e, exc_info=True)
         return []
