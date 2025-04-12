@@ -1,3 +1,5 @@
+import datetime
+
 from .file_utils import *
 from .search_utils import *
 from .database_handling import insert_file_to_db, restart_indexing_database, fulltext_search, exact_search
@@ -7,7 +9,8 @@ def score_result(result, search_term, content_filters):
 
     preview = result.get('preview', '').lower()
     file_type = result.get('type', '').lower()
-    size = result.get('size', '').lower()
+    size = result.get('size', '')
+    last_modified = result.get('last_modified')
 
     if search_term and search_term.lower() in result['name'].lower():
         score += 10
@@ -26,7 +29,9 @@ def score_result(result, search_term, content_filters):
     if size > 10 * 1024:  # > 10 KB
         score -= 2
 
-    score += result.get('last_modified', 0) / 1e9 # 10^9
+    if isinstance(last_modified, datetime.datetime):
+        score += last_modified.timestamp() / 1e9
+
     return score
 
 def index_files(src_filepath, search_term, exact_match, content_filters):
@@ -44,6 +49,7 @@ def index_files(src_filepath, search_term, exact_match, content_filters):
 
     scored_results = sorted(results, key=lambda r: score_result(r, search_term, content_filters), reverse=True)
     return scored_results
+
 def walk_files(src_filepath):
     for root, _, files in os.walk(src_filepath):
         for file in files:

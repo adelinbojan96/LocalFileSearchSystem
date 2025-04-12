@@ -10,7 +10,7 @@ from rest_framework.decorators import api_view
 from .serializer import FileSerializer
 from .indexing import index_files, extract_path_filters, extract_content_filters
 from .database_handling import extract_file_from_db, restart_indexing_database
-from .report_creator import update_file
+from .report_creator import update_file_json, update_file_txt
 
 logger = logging.getLogger(__name__)
 
@@ -19,6 +19,7 @@ def search_file(request):
     try:
         raw_query = request.data.get('file_name', '').strip()
         exact_match = request.data.get('exact_match', False)
+        json_format = request.data.get('json_format', False)
         path_filters = extract_path_filters(raw_query)
         content_filters = extract_content_filters(raw_query)
 
@@ -56,7 +57,11 @@ def search_file(request):
                 logger.error("Error indexing files in %s: %s", directory, inner_exc, exc_info=True)
                 return JsonResponse({'error': 'Error processing search'}, status=500)
 
-        update_file(all_results)
+        # produce txt/json report
+        if not json_format:
+            update_file_txt(all_results)
+        else:
+            update_file_json(all_results)
 
         return JsonResponse({
             'results': all_results
