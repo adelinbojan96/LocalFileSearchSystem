@@ -8,7 +8,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from .serializer import FileSerializer
-from .search_algorithm import index_files, extract_path_filters, extract_content_filters
+from .indexing import index_files, extract_path_filters, extract_content_filters
 from .database_handling import extract_file_from_db, restart_indexing_database
 from .report_creator import update_file
 
