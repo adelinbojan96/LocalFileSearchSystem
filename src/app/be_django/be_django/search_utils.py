@@ -5,9 +5,14 @@ def extract_path_filters(query: str):
     return [quoted or unquoted for quoted, unquoted in matches if quoted or unquoted]
 
 def extract_content_filters(query: str):
-    matches = re.findall(r'\bcontent:(?:"([^"]+)"|(\S+))', query, re.IGNORECASE)
-    terms = [quoted or unquoted for quoted, unquoted in matches if quoted or unquoted]
-    return [term.strip() for t in terms for term in t.split()]
+    matches = re.findall(r'\bcontent:\s*(?:"([^"]*)"|([^\s]+))', query, re.IGNORECASE)
+    terms = []
+    for quoted, unquoted in matches:
+        if quoted:
+            terms.append(quoted.strip())
+        elif unquoted:
+            terms.extend([t.strip() for t in unquoted.split()])
+    return terms
 
 def build_search_query(path_filters: list[str], content_filters: list[str]):
     conditions = []

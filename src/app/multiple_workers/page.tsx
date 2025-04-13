@@ -3,7 +3,6 @@ import styles from "./page.module.css";
 import { SetStateAction, useState } from "react";
 import axios from "axios";
 
-
 export default function Home() {
   const [fileName, setFileName] = useState("");
     const [results, setResults] = useState<any[]>([]);
@@ -11,7 +10,6 @@ export default function Home() {
   const handleInputChange = (e: { target: { value: SetStateAction<string> } }) => {
     setFileName(e.target.value);
   };
-
     const handleSearchClick = async () => {
         if (fileName) {
             try {

@@ -42,24 +42,21 @@ def fulltext_search(search_query, content_filters, limit=50):
                 conditions.append("MATCH(name, preview) AGAINST (%s IN NATURAL LANGUAGE MODE)")
                 params.append(search_query)
 
-            if content_filters:
-                conditions.append("MATCH(preview) AGAINST (%s IN BOOLEAN MODE)")
-                params.append(" ".join(f"+{term}" for term in content_filters))
+            for term in content_filters:
+                conditions.append("LOWER(preview) LIKE LOWER(%s)")
+                params.append(f"%{term}%")
 
             sql = """
                 SELECT
                     name, path, size, last_modified, creation_time, type, preview
                 FROM file_info
             """
-
             if conditions:
                 sql += " WHERE " + " AND ".join(conditions)
-
             sql += " LIMIT %s;"
             params.append(limit)
 
             cursor.execute(sql, params)
-
             return [
                 dict(zip([col[0] for col in cursor.description], row))
                 for row in cursor.fetchall()
