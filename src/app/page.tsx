@@ -33,11 +33,11 @@ export default function Home() {
   const fetchSuggestions = useCallback(async (query: string) => {
     if (query.length > 2) {
       try {
-        const response = await axios.get<string[]>(
+        const response = await axios.get(
             'http://localhost:8000/api/suggestions/',
             { params: { q: query } }
         );
-        setSuggestions(response.data);
+        setSuggestions(response.data.suggestions || []);
       } catch (error) {
         console.error("Error fetching suggestions:", error);
         setSuggestions([]);
@@ -105,29 +105,31 @@ export default function Home() {
     <div className={styles.page}>
       <main className={styles.main}>
         <h1>Search files locally</h1>
-        <input
-          type="text"
-          placeholder="Enter file name"
-          className={styles.searchBar}
-          value={fileName}
-          onChange={handleInputChange}
-        />
-        {suggestions.length > 0 && (
-            <div className={styles.suggestionsDropdown}>
-              {suggestions.map((term, index) => (
-                  <div
-                      key={index}
-                      className={styles.suggestionItem}
-                      onClick={() => {
-                        setFileName(term);
-                        setSuggestions([]);
-                      }}
-                  >
-                    {term}
-                  </div>
-              ))}
-            </div>
-        )}
+        <div className={styles.searchContainer}>
+          <input
+              type="text"
+              placeholder="Enter file name"
+              className={styles.searchBar}
+              value={fileName}
+              onChange={handleInputChange}
+          />
+          {suggestions.length > 0 && (
+              <div className={styles.suggestionsDropdown}>
+                {suggestions.map((term, index) => (
+                    <div
+                        key={index}
+                        className={styles.suggestionItem}
+                        onClick={() => {
+                          setFileName(term);
+                          setSuggestions([]);
+                        }}
+                    >
+                      {term}
+                    </div>
+                ))}
+              </div>
+          )}
+        </div>
         <button className={styles.searchButton} onClick={handleSearchClick}>
           Search
         </button>

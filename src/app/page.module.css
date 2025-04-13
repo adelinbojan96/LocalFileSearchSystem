@@ -28,7 +28,47 @@
 .main h1 {
   font-family: var(--font-geist-sans);
 }
+.searchContainer {
+  position: relative;
+  width: 100%;
+  max-width: 300px;
+}
 
+.searchBar {
+  padding: 8px 12px;
+  border-radius: 5px;
+  background-color: #f1ede9;
+  color: #3d2f24;
+  border: 1px solid #bdaea1;
+  font-size: 16px;
+  width: 100%;
+  margin-bottom: 4px;
+}
+
+.suggestionsDropdown {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+  font-size: 14px;
+  color: #3e2f23;
+  font-family: sans-serif;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.suggestionItem {
+  background-color: #e7e0d8;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.suggestionItem:hover {
+  background-color: #d6cec5;
+}
 .searchBar {
   padding: 10px 20px;
   border-radius: 30px;

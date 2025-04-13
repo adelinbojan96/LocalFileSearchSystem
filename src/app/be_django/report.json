@@ -286,5 +286,126 @@
       "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir2"
     ],
     "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-04-13T17:12:38.318890",
+    "query": "cosmin",
+    "results_count": 1,
+    "content_filters": [],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1"
+    ],
+    "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-04-13T17:12:49.436207",
+    "query": "path:D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1",
+    "results_count": 8,
+    "content_filters": [],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1"
+    ],
+    "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-04-13T17:13:03.294148",
+    "query": "path:D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1 path: D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir2",
+    "results_count": 0,
+    "content_filters": [],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1"
+    ],
+    "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-04-13T17:13:13.119632",
+    "query": "path:D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1 path:D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir2",
+    "results_count": 15,
+    "content_filters": [],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1",
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir2"
+    ],
+    "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-04-13T17:13:29.212634",
+    "query": "cornel",
+    "results_count": 0,
+    "content_filters": [],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1"
+    ],
+    "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-04-13T17:13:34.551688",
+    "query": "costel",
+    "results_count": 1,
+    "content_filters": [],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1"
+    ],
+    "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-04-13T17:34:24.197613",
+    "query": "cos",
+    "results_count": 0,
+    "content_filters": [],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1"
+    ],
+    "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-04-13T17:34:28.060787",
+    "query": "cosmin",
+    "results_count": 1,
+    "content_filters": [],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1"
+    ],
+    "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-04-13T17:34:37.113586",
+    "query": "cosmin",
+    "results_count": 1,
+    "content_filters": [],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1"
+    ],
+    "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-04-13T17:36:25.606951",
+    "query": "costel",
+    "results_count": 1,
+    "content_filters": [],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1"
+    ],
+    "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-04-13T17:36:40.332578",
+    "query": "path:D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1",
+    "results_count": 8,
+    "content_filters": [],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1"
+    ],
+    "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-04-13T17:36:44.912455",
+    "query": "path:D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1",
+    "results_count": 8,
+    "content_filters": [],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1"
+    ],
+    "invalid_paths": []
   }
 ]

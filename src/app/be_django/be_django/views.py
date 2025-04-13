@@ -98,7 +98,7 @@ def search_file(request):
                 'result_count': len(all_results)
             }
         })
-    
+
     except Exception as e:
         logger.error("Unexpected search error: %s", e, exc_info=True)
         return JsonResponse({
