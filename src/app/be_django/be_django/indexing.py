@@ -4,7 +4,7 @@ from .file_utils import *
 from .search_utils import *
 from .database_handling import insert_file_to_db, restart_indexing_database, fulltext_search, exact_search
 
-def score_result(result, search_term, content_filters):
+def score_result(result, search_term, content_filters, history_manager):
     score = 0
 
     preview = result.get('preview', '').lower()
@@ -14,6 +14,13 @@ def score_result(result, search_term, content_filters):
 
     if search_term and search_term.lower() in result['name'].lower():
         score += 10
+
+    popular_terms = [term for term, _ in history_manager.get_popular_terms()]
+    for term in popular_terms:
+        if term in preview:
+            score += 5
+        if term in result['name'].lower():
+            score += 3
 
     if content_filters:
         preview = result.get('preview', '').lower()
@@ -34,9 +41,11 @@ def score_result(result, search_term, content_filters):
 
     return score
 
-def index_files(src_filepath, search_term, exact_match, content_filters):
+
+def index_files(src_filepaths, search_term, exact_match, content_filters, history_manager):
     restart_indexing_database()
-    for filepath in walk_files(src_filepath):
+
+    for filepath in walk_files(src_filepaths):
         metadata = get_metadata(filepath)
         if metadata:
             insert_file_to_db(filepath, metadata)
@@ -47,10 +56,19 @@ def index_files(src_filepath, search_term, exact_match, content_filters):
     else:
         results = fulltext_search(search_term, content_filters)
 
-    scored_results = sorted(results, key=lambda r: score_result(r, search_term, content_filters), reverse=True)
+    scored_results = sorted(
+        results,
+        key=lambda r: score_result(r, search_term, content_filters, history_manager),
+        reverse=True
+    )
     return scored_results
 
-def walk_files(src_filepath):
-    for root, _, files in os.walk(src_filepath):
-        for file in files:
-            yield os.path.join(root, file)
+
+def walk_files(src_filepaths):
+    if isinstance(src_filepaths, str):
+        src_filepaths = [src_filepaths]
+
+    for path in src_filepaths:
+        for root, _, files in os.walk(path):
+            for file in files:
+                yield os.path.join(root, file)
