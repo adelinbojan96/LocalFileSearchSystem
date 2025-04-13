@@ -7,14 +7,12 @@ import axios from "axios";
 export default function Home() {
   const [fileName, setFileName] = useState("");
     const [results, setResults] = useState<any[]>([]);
-    //const [buttonClicked, setButtonClicked] = useState(false);
 
   const handleInputChange = (e: { target: { value: SetStateAction<string> } }) => {
     setFileName(e.target.value);
   };
 
     const handleSearchClick = async () => {
-        //setButtonClicked(true);
         if (fileName) {
             try {
             const response = await axios.get("http://localhost:8000/api/search/", {
@@ -46,30 +44,6 @@ export default function Home() {
         <button className={styles.searchButton} onClick={handleSearchClick}>
           Search
         </button>
-          {/*
-          {results.length > 0 && (
-              <div>
-                  <h2 style={{ color: "green" }}>
-                      Found {results.length === 1 ? "one matching file" : `${results.length} matching files`}
-                  </h2>
-                  <h2>Search Results:</h2>
-                  <ul>
-                      {results.map((file, index) => (
-                          <li key={index}>
-                              <div className={styles.fileItem}>
-                                  <strong>{file.name}</strong>
-                                  <div>Path: {file.path}</div>
-                                  <div>Size: {Math.round(file.size / 1024)} KB</div>
-
-                                  <div>Type: {file.type}</div>
-                                  <div>Server: {file.server}</div>
-                              </div>
-                          </li>
-                      ))}
-                  </ul>
-              </div>
-          )}
-          */}
           {results.length > 0 && (
               <div>
                   <h2 style={{ color: "green" }}>

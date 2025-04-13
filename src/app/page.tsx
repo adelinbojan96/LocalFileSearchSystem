@@ -18,9 +18,8 @@ export default function Home() {
   const [results, setResults] = useState<FileMetadata[]>([]);
   const [buttonClicked, setButtonClicked] = useState(false);
   const [exact_match, setExact_match] = useState(false);
+  const [json_format, setJson_format] = useState(false);
   const [selectedFile, setSelectedFile] = useState<FileMetadata | null>(null);
-  const [directoryPath, setDirectoryPath] = useState("");
-  const [useCustomDirectory, setUseCustomDirectory] = useState(false);
 
   const handleInputChange = (e: { target: { value: SetStateAction<string> } }) => {
     setFileName(e.target.value);
@@ -34,7 +33,7 @@ export default function Home() {
         const payload = {
           file_name: fileName,
           exact_match: exact_match,
-          directory_path: useCustomDirectory ? directoryPath : "",
+          json_format: json_format,
         };
 
         const response = await axios.post("http://localhost:8000/api/search/", payload);
@@ -98,32 +97,15 @@ export default function Home() {
           />
         </div>
 
-        <div className={styles.customDirectory}>
-          <div className={styles.customDirectoryCheckboxRow}>
-            <label htmlFor="customDirectoryCheckbox">Custom Directory</label>
-            <input
+        <div className="form-row" style={{ textAlign: "left" }}>
+          <label htmlFor="json_format">Report as Json </label>
+          <input
               type="checkbox"
-              id="customDirectoryCheckbox"
-              checked={useCustomDirectory}
-              onChange={(e) => {
-                const checked = e.target.checked;
-                setUseCustomDirectory(checked);
-              
-                if (!checked) {
-                  setDirectoryPath("");
-                }
-              }}
-            />
-          </div>
-          {useCustomDirectory && (
-            <input
-              type="text"
-              placeholder="provide the absolute path"
-              value={directoryPath}
-              onChange={(e) => setDirectoryPath(e.target.value)}
-              className={styles.directoryInput}
-            />
-          )}
+              name="json_format"
+              id="json_format"
+              checked={json_format}
+              onChange={(e) => setJson_format(e.target.checked)}
+          />
         </div>
         {/* Assignment 2 */}
         <div>
