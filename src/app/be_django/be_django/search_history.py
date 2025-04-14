@@ -21,7 +21,7 @@ class SearchHistoryManager:
 
     def load_history(self):
         try:
-            with open("report.json", "r") as f:
+            with open("results.json", "r") as f:
                 self.search_history = json.load(f)
         except (FileNotFoundError, json.JSONDecodeError):
             self.search_history = []
@@ -31,7 +31,7 @@ class SearchHistoryManager:
         self._save_to_file(search_data)
 
     def _save_to_file(self, data):
-        with open("report.json", "w") as f:
+        with open("results.json", "w") as f:
             json.dump(self.search_history, f, indent=2)
 
     def get_popular_terms(self, limit=5):

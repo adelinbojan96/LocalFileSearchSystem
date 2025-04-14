@@ -32,7 +32,6 @@ def search_file(request):
 
         directories = (
             path_filters if path_filters
-            else [request.data.get('directory_path')] if request.data.get('directory_path')
             else [original_dir]
         )
 
@@ -141,7 +140,7 @@ def get_suggestions(request):
     query = request.GET.get('q', '').lower()
     print(query)
     try:
-        popular_terms = history_manager.get_popular_terms(limit=20)
+        popular_terms = history_manager.get_popular_terms(limit=50)
         print(popular_terms)
         suggestions = [
             term for term, count in popular_terms
