@@ -105,6 +105,30 @@ def extract_file_from_db(file_name):
         logger.error("Database error in extract_file_from_db for file_name %s: %s", file_name, err, exc_info=True)
         return None
 
+def extract_widget(name):
+    try:
+        with connection.cursor() as cursor:
+            sql = """
+                SELECT *
+                FROM special_words
+                WHERE word_name = %s
+            """
+            params = [name]
+            sql += " LIMIT 1;"
+
+            cursor.execute(sql, params)
+            row = cursor.fetchone()
+            if row:
+                return {
+                    'id_word': row[0],
+                    'word_name': row[1],
+                    'image': row[2]
+                }
+            return None
+    except Exception as e:
+        logger.error("Exact search failed: %s", e, exc_info=True)
+        return None
+
 def restart_indexing_database():
     try:
         FileInfo.objects.all().delete()

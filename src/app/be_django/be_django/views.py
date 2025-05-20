@@ -1,5 +1,4 @@
-import os
-import logging
+import base64
 
 from django.http import JsonResponse
 from rest_framework import status
@@ -8,7 +7,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from .serializer import FileSerializer
 from .indexing import index_files, extract_path_filters, extract_content_filters
-from .database_handling import extract_file_from_db, restart_indexing_database
+from .database_handling import *
 from .report_creator import update_file_json, update_file_txt
 from datetime import datetime
 from .search_history import *
@@ -104,6 +103,7 @@ def search_file(request):
             'error': 'Internal server error',
             'details': str(e)
         }, status=500)
+
 @api_view(['GET'])
 def get_file_metadata(request, file_name):
     try:
@@ -153,17 +153,28 @@ def get_suggestions(request):
         logger.error("Suggestions error: %s", e)
         return JsonResponse({'error': 'Failed to get suggestions'}, status=500)
 
-class FileListView(APIView):
-    def get(self, request):
-        try:
-            # basic example of files for testing
-            files = [
-                {'name': 'file1.txt', 'size': 1234, 'path': '/path/to/file1.txt'},
-                {'name': 'file2.jpg', 'size': 1243, 'path': '/path/to/file2.jpg'},
-                {'name': 'file3.obj', 'size': 3251, 'path': '/path/to/file3.obj'},
-            ]
-            serializer = FileSerializer(files, many=True)
-            return Response(serializer.data)
-        except Exception as e:
-            logger.error("Error retrieving file list: %s", e, exc_info=True)
-            return Response({'error': 'Internal server error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+@api_view(['GET'])
+def get_widget(request):
+    query = request.GET.get('q', '').lower()
+    try:
+        row = extract_widget(query)
+        if not row:
+            return JsonResponse({'widget': None}, status=status.HTTP_200_OK)
+
+        # img in base64 for frontend
+        image_bytes = row['image']
+        b64 = base64.b64encode(image_bytes).decode('utf-8')
+
+        widget_obj = {
+            'id_word':   row['id_word'],
+            'word_name': row['word_name'],
+            'image':     b64,
+        }
+        return JsonResponse({'widget': widget_obj}, status=status.HTTP_200_OK)
+
+    except Exception as e:
+        logger.error("error retrieving widget: %s", e, exc_info=True)
+        return JsonResponse(
+            {'error': 'Internal server error'},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )

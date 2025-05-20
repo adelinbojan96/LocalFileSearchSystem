@@ -7,7 +7,6 @@ def update_file_txt(results):
     with open("report.txt", "a", encoding="utf-8") as f:
         f.write(json.dumps(serialized_data, default=str) + "\n")
 
-
 def update_file_json(results):
     serialized_data = ItemSerializer(results, many=True).data
     search_block = {
@@ -27,3 +26,13 @@ def update_file_json(results):
     existing_data.append(search_block)
     with open("report.json", "w", encoding="utf-8") as f:
         json.dump(existing_data, f, ensure_ascii=False, indent=2, default=str)
+
+def create_large_results_report(results):
+    if len(results) > 20:
+        serialized_data = ItemSerializer(results, many=True).data
+        report_data = {
+            "search_info": "Large Results Report",
+            "results": serialized_data
+        }
+        with open("large_results_report.json", "w", encoding="utf-8") as f:
+            json.dump(report_data, f, ensure_ascii=False, indent=2, default=str)

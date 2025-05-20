@@ -21,8 +21,10 @@ export default function Home() {
   const [json_format, setJson_format] = useState(false);
   const [selectedFile, setSelectedFile] = useState<FileMetadata | null>(null);
   const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [widget, setWidget] = useState<{ id_word: number; word_name: string; image: string } | null>(null);
 
-  const debounce = useCallback(<F extends (...args: any[]) => void>(func: F, delay: number) => {
+  const debounce = useCallback(<F extends (...args: any[]) => void>(func: F, delay: number) =>
+  {
     let timer: NodeJS.Timeout;
     return (...args: Parameters<F>) => {
       clearTimeout(timer);
@@ -47,7 +49,24 @@ export default function Home() {
     }
   }, []);
 
-  const debouncedFetch = useCallback(debounce(fetchSuggestions, 300), [debounce, fetchSuggestions]);
+  const fetchWidget = useCallback(async (query: string) => {
+    if (query.length > 0) {
+      try {
+        const response = await axios.get(
+            'http://localhost:8000/api/widgets/',
+            { params: { q: query } }
+        );
+        setWidget(response.data.widget || null);
+      } catch (error) {
+        console.error("Error fetching widgets:", error);
+        setWidget(null);
+      }
+    } else {
+      setWidget(null);
+    }
+  }, []);
+
+  const debouncedFetch = useCallback(debounce(fetchSuggestions, 200), [debounce, fetchSuggestions]);
 
   const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -68,10 +87,12 @@ export default function Home() {
 
         const response = await axios.post("http://localhost:8000/api/search/", payload);
         setResults(response.data.results || []);
+        await fetchWidget(fileName);
         setButtonClicked(true);
       } catch (error) {
         console.error("Search error:", error);
         setResults([]);
+        setWidget(null);
         setButtonClicked(true);
       }
     } else {
@@ -102,114 +123,123 @@ export default function Home() {
     URL.revokeObjectURL(url);
   };
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <h1>Search files locally</h1>
-        <div className={styles.searchContainer}>
-          <input
-              type="text"
-              placeholder="Enter file name"
-              className={styles.searchBar}
-              value={fileName}
-              onChange={handleInputChange}
-          />
-          {suggestions.length > 0 && (
-              <div className={styles.suggestionsDropdown}>
-                {suggestions.map((term, index) => (
-                    <div
-                        key={index}
-                        className={styles.suggestionItem}
-                        onClick={() => {
-                          setFileName(term);
-                          setSuggestions([]);
-                        }}
-                    >
-                      {term}
-                    </div>
-                ))}
+      <div className={styles.page}>
+        <main className={styles.main}>
+          <h1>Search files locally</h1>
+          <div className={styles.searchContainer}>
+            <input
+                type="text"
+                placeholder="Enter file name"
+                className={styles.searchBar}
+                value={fileName}
+                onChange={handleInputChange}
+            />
+            {widget && (
+                <div className={styles.widgetImageContainer}>
+                  <img
+                      src={`data:image/png;base64,${widget.image}`}
+                      alt={widget.word_name}
+                      className={styles.widgetImage}
+                  />
+                </div>
+            )}
+            {suggestions.length > 0 && (
+                <div className={styles.suggestionsDropdown}>
+                  {suggestions.map((term, index) => (
+                      <div
+                          key={index}
+                          className={styles.suggestionItem}
+                          onClick={() => {
+                            setFileName(term);
+                            setSuggestions([]);
+                          }}
+                      >
+                        {term}
+                      </div>
+                  ))}
+                </div>
+            )}
+          </div>
+          <button className={styles.searchButton} onClick={handleSearchClick}>
+            Search
+          </button>
+
+          <div className="form-row" style={{ textAlign: "left" }}>
+            <label htmlFor="exact_match">Exact Match </label>
+            <input
+                type="checkbox"
+                name="exact_match"
+                id="exact_match"
+                checked={exact_match}
+                onChange={(e) => setExact_match(e.target.checked)}
+            />
+          </div>
+
+          <div className="form-row" style={{ textAlign: "left" }}>
+            <label htmlFor="json_format">Report as Json </label>
+            <input
+                type="checkbox"
+                name="json_format"
+                id="json_format"
+                checked={json_format}
+                onChange={(e) => setJson_format(e.target.checked)}
+            />
+          </div>
+          {/* Assignment 2 */}
+          <div>
+            <p
+                className={styles.clickableFilename}
+                onClick={() => window.location.href = "/multiple_workers"}>
+              MultipleWorkers Mode
+            </p>
+          </div>
+
+          {results.length === 0 && buttonClicked && (
+              <div>
+                <h2 style={{ color: "red" }}>Not found</h2>
               </div>
           )}
-        </div>
-        <button className={styles.searchButton} onClick={handleSearchClick}>
-          Search
-        </button>
 
-        <div className="form-row" style={{ textAlign: "left" }}>
-          <label htmlFor="exact_match">Exact Match </label>
-          <input
-            type="checkbox"
-            name="exact_match"
-            id="exact_match"
-            checked={exact_match}
-            onChange={(e) => setExact_match(e.target.checked)}
-          />
-        </div>
+          {results.length > 0 && (
+              <div>
+                <h2 style={{ color: "green" }}>
+                  Found {results.length === 1 ? "one matching file" : `${results.length} matching files`}
+                </h2>
+                <h2>Search Results:</h2>
+                <ul>
+                  {results.map((file, index) => (
+                      <li key={index}>
+                        <div className={styles.fileItem}>
+                          <strong className={styles.clickableFilename} onClick={() => handleFilenameClick(file)}>
+                            {file.name}
+                          </strong>
+                          <div>Path: {file.path}</div>
+                          <div>Size: {Math.round(file.size / 1024)} KB</div>
+                          <div>Type: {file.type}</div>
+                        </div>
+                      </li>
+                  ))}
+                </ul>
+              </div>
+          )}
 
-        <div className="form-row" style={{ textAlign: "left" }}>
-          <label htmlFor="json_format">Report as Json </label>
-          <input
-              type="checkbox"
-              name="json_format"
-              id="json_format"
-              checked={json_format}
-              onChange={(e) => setJson_format(e.target.checked)}
-          />
-        </div>
-        {/* Assignment 2 */}
-        <div>
-          <p
-              className={styles.clickableFilename}
-              onClick={() => window.location.href = "/multiple_workers"}>
-            MultipleWorkers Mode
-          </p>
-        </div>
-
-        {results.length === 0 && buttonClicked && (
-          <div>
-            <h2 style={{ color: "red" }}>Not found</h2>
-          </div>
-        )}
-
-        {results.length > 0 && (
-          <div>
-            <h2 style={{ color: "green" }}>
-              Found {results.length === 1 ? "one matching file" : `${results.length} matching files`}
-            </h2>
-            <h2>Search Results:</h2>
-            <ul>
-              {results.map((file, index) => (
-                <li key={index}>
-                  <div className={styles.fileItem}>
-                    <strong className={styles.clickableFilename} onClick={() => handleFilenameClick(file)}>
-                      {file.name}
-                    </strong>
-                    <div>Path: {file.path}</div>
-                    <div>Size: {Math.round(file.size / 1024)} KB</div>
-                    <div>Type: {file.type}</div>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-
-        {selectedFile && (
-          <div className={styles.metadataPanel}>
-            <div className={styles.metadataContent}>
-              {selectedFile.preview && (
-                <div className={styles.previewSection}>
-                  <h3>Preview:</h3>
-                  <pre>{selectedFile.preview}</pre>
+          {selectedFile && (
+              <div className={styles.metadataPanel}>
+                <div className={styles.metadataContent}>
+                  {selectedFile.preview && (
+                      <div className={styles.previewSection}>
+                        <h3>Preview:</h3>
+                        <pre>{selectedFile.preview}</pre>
+                      </div>
+                  )}
+                  <button className={styles.downloadButton} onClick={handleDownload}>
+                    Download Metadata
+                  </button>
                 </div>
-              )}
-              <button className={styles.downloadButton} onClick={handleDownload}>
-                Download Metadata
-              </button>
-            </div>
-          </div>
-        )}
+              </div>
+          )}
 
-      </main>
-    </div>
+        </main>
+      </div>
   );
 }

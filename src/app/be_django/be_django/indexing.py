@@ -43,13 +43,16 @@ def score_result(result, search_term, content_filters, history_manager):
 
 
 def index_files(src_filepaths, search_term, exact_match, content_filters, history_manager):
+    # clear the db first
     restart_indexing_database()
 
+    # update db
     for filepath in walk_files(src_filepaths):
         metadata = get_metadata(filepath)
         if metadata:
             insert_file_to_db(filepath, metadata)
 
+    # extract
     if exact_match:
         clean_name = re.sub(r'(path|content):\S+', '', search_term).strip()
         results = exact_search(clean_name, content_filters)

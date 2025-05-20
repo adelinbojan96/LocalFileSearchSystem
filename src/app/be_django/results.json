@@ -224,5 +224,613 @@
       "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir2"
     ],
     "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-04-14T17:41:42.911179",
+    "query": "road",
+    "results_count": 2,
+    "content_filters": [],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1"
+    ],
+    "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-04-14T17:42:01.300492",
+    "query": "roadd",
+    "results_count": 0,
+    "content_filters": [],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1"
+    ],
+    "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-04-14T18:00:52.315251",
+    "query": "cosmin",
+    "results_count": 1,
+    "content_filters": [],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1"
+    ],
+    "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-04-14T18:01:20.583668",
+    "query": "path:D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1 path:D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir2",
+    "results_count": 15,
+    "content_filters": [],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1",
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir2"
+    ],
+    "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-04-14T18:01:34.264743",
+    "query": "path:D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1 path:D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir2 content:road",
+    "results_count": 3,
+    "content_filters": [
+      "road"
+    ],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1",
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir2"
+    ],
+    "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-04-14T18:01:57.002779",
+    "query": "path:D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1 path:D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir2 content:road content:morning",
+    "results_count": 1,
+    "content_filters": [
+      "road",
+      "morning"
+    ],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1",
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir2"
+    ],
+    "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-05-20T16:27:46.756235",
+    "query": "calculator",
+    "results_count": 0,
+    "content_filters": [],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1"
+    ],
+    "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-05-20T16:28:02.002293",
+    "query": "cosmin",
+    "results_count": 1,
+    "content_filters": [],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1"
+    ],
+    "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-05-20T16:32:41.232030",
+    "query": "calculator",
+    "results_count": 0,
+    "content_filters": [],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1"
+    ],
+    "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-05-20T16:36:17.283435",
+    "query": "calculator",
+    "results_count": 0,
+    "content_filters": [],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1"
+    ],
+    "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-05-20T16:37:25.853959",
+    "query": "calculator",
+    "results_count": 0,
+    "content_filters": [],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1"
+    ],
+    "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-05-20T16:37:34.567472",
+    "query": "calculator",
+    "results_count": 0,
+    "content_filters": [],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1"
+    ],
+    "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-05-20T16:43:24.157281",
+    "query": "calculator",
+    "results_count": 0,
+    "content_filters": [],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1"
+    ],
+    "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-05-20T16:47:26.118355",
+    "query": "calculator",
+    "results_count": 0,
+    "content_filters": [],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1"
+    ],
+    "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-05-20T16:47:45.142707",
+    "query": "calculator",
+    "results_count": 0,
+    "content_filters": [],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1"
+    ],
+    "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-05-20T16:49:47.831341",
+    "query": "calculator",
+    "results_count": 0,
+    "content_filters": [],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1"
+    ],
+    "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-05-20T17:51:54.137560",
+    "query": "calculator",
+    "results_count": 0,
+    "content_filters": [],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1"
+    ],
+    "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-05-20T17:53:28.847784",
+    "query": "calculator",
+    "results_count": 0,
+    "content_filters": [],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1"
+    ],
+    "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-05-20T17:53:29.828979",
+    "query": "calculator",
+    "results_count": 0,
+    "content_filters": [],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1"
+    ],
+    "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-05-20T17:53:30.034495",
+    "query": "calculator",
+    "results_count": 0,
+    "content_filters": [],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1"
+    ],
+    "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-05-20T17:53:30.185913",
+    "query": "calculator",
+    "results_count": 0,
+    "content_filters": [],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1"
+    ],
+    "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-05-20T17:53:36.709341",
+    "query": "calculator",
+    "results_count": 0,
+    "content_filters": [],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1"
+    ],
+    "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-05-20T17:53:50.380704",
+    "query": "calculator",
+    "results_count": 0,
+    "content_filters": [],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1"
+    ],
+    "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-05-20T17:55:39.604072",
+    "query": "calculator",
+    "results_count": 0,
+    "content_filters": [],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1"
+    ],
+    "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-05-20T17:55:40.943827",
+    "query": "calculator",
+    "results_count": 0,
+    "content_filters": [],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1"
+    ],
+    "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-05-20T17:55:41.156210",
+    "query": "calculator",
+    "results_count": 0,
+    "content_filters": [],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1"
+    ],
+    "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-05-20T17:57:05.189257",
+    "query": "monster",
+    "results_count": 0,
+    "content_filters": [],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1"
+    ],
+    "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-05-20T17:57:22.904338",
+    "query": "cereals",
+    "results_count": 0,
+    "content_filters": [],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1"
+    ],
+    "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-05-20T17:57:32.121708",
+    "query": "monster",
+    "results_count": 0,
+    "content_filters": [],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1"
+    ],
+    "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-05-20T17:57:40.265371",
+    "query": "pc",
+    "results_count": 0,
+    "content_filters": [],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1"
+    ],
+    "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-05-20T17:58:48.241631",
+    "query": "content: pc",
+    "results_count": 0,
+    "content_filters": [
+      "pc"
+    ],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1"
+    ],
+    "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-05-20T17:58:51.025399",
+    "query": "content: pc",
+    "results_count": 0,
+    "content_filters": [
+      "pc"
+    ],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1"
+    ],
+    "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-05-20T17:58:54.006279",
+    "query": "content:pc",
+    "results_count": 0,
+    "content_filters": [
+      "pc"
+    ],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1"
+    ],
+    "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-05-20T17:58:57.362277",
+    "query": "content:monster",
+    "results_count": 0,
+    "content_filters": [
+      "monster"
+    ],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1"
+    ],
+    "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-05-20T17:59:01.416890",
+    "query": "content:cosmin",
+    "results_count": 0,
+    "content_filters": [
+      "cosmin"
+    ],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1"
+    ],
+    "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-05-20T17:59:03.381952",
+    "query": "content: cosmin",
+    "results_count": 0,
+    "content_filters": [
+      "cosmin"
+    ],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1"
+    ],
+    "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-05-20T17:59:04.292539",
+    "query": "content: cosmin",
+    "results_count": 0,
+    "content_filters": [
+      "cosmin"
+    ],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1"
+    ],
+    "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-05-20T17:59:04.434068",
+    "query": "content: cosmin",
+    "results_count": 0,
+    "content_filters": [
+      "cosmin"
+    ],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1"
+    ],
+    "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-05-20T17:59:15.510901",
+    "query": "cosmin",
+    "results_count": 1,
+    "content_filters": [],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1"
+    ],
+    "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-05-20T17:59:18.704937",
+    "query": "cosmin",
+    "results_count": 1,
+    "content_filters": [],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1"
+    ],
+    "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-05-20T18:00:17.500480",
+    "query": "cosmin",
+    "results_count": 1,
+    "content_filters": [],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1"
+    ],
+    "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-05-20T18:00:20.336972",
+    "query": "cosmin",
+    "results_count": 1,
+    "content_filters": [],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1"
+    ],
+    "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-05-20T18:04:20.932874",
+    "query": "cosmin",
+    "results_count": 1,
+    "content_filters": [],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1"
+    ],
+    "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-05-20T18:04:26.515354",
+    "query": "cosmin",
+    "results_count": 1,
+    "content_filters": [],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1"
+    ],
+    "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-05-20T18:04:36.453416",
+    "query": "monster",
+    "results_count": 0,
+    "content_filters": [],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1"
+    ],
+    "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-05-20T18:04:42.055049",
+    "query": "cereals",
+    "results_count": 0,
+    "content_filters": [],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1"
+    ],
+    "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-05-20T18:04:58.805349",
+    "query": "path: D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir2",
+    "results_count": 0,
+    "content_filters": [],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1"
+    ],
+    "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-05-20T18:05:01.828991",
+    "query": "path:D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir2",
+    "results_count": 7,
+    "content_filters": [],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir2"
+    ],
+    "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-05-20T18:05:10.386177",
+    "query": "path:D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir2 content: file10",
+    "results_count": 0,
+    "content_filters": [
+      "file10"
+    ],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir2"
+    ],
+    "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-05-20T18:05:14.325239",
+    "query": "path:D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir2 content:file10",
+    "results_count": 0,
+    "content_filters": [
+      "file10"
+    ],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir2"
+    ],
+    "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-05-20T18:05:22.695728",
+    "query": "path:D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir2 content:",
+    "results_count": 0,
+    "content_filters": [],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir2"
+    ],
+    "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-05-20T18:05:26.705403",
+    "query": "path:D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir2",
+    "results_count": 7,
+    "content_filters": [],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir2"
+    ],
+    "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-05-20T18:05:41.160633",
+    "query": "path:D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir2 content:nothing",
+    "results_count": 0,
+    "content_filters": [
+      "nothing"
+    ],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir2"
+    ],
+    "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-05-20T18:05:44.971786",
+    "query": "path:D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir2 content: nothing",
+    "results_count": 0,
+    "content_filters": [
+      "nothing"
+    ],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir2"
+    ],
+    "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-05-20T18:05:48.158837",
+    "query": "path:D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir2 content: nothing.txt",
+    "results_count": 0,
+    "content_filters": [
+      "nothing.txt"
+    ],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir2"
+    ],
+    "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-05-20T18:05:51.279613",
+    "query": "path:D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir2 content:nothing.txt",
+    "results_count": 0,
+    "content_filters": [
+      "nothing.txt"
+    ],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir2"
+    ],
+    "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-05-20T18:05:56.467079",
+    "query": "path:D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir2 content: as",
+    "results_count": 0,
+    "content_filters": [
+      "as"
+    ],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir2"
+    ],
+    "invalid_paths": []
   }
 ]

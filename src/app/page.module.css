@@ -34,6 +34,30 @@
   max-width: 300px;
 }
 
+.searchBarWithWidget {
+  display: flex;
+  align-items: center;
+  position: relative;
+  gap: 16px;
+}
+
+.widgetImageContainer {
+  position: fixed;
+  top: 240px;
+  right: 250px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 100;
+}
+
+.widgetImage {
+  max-width: 48px;
+  max-height: 48px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
 .searchBar {
   padding: 8px 12px;
   border-radius: 5px;
