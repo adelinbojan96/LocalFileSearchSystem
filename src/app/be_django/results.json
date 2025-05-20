@@ -832,5 +832,25 @@
       "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir2"
     ],
     "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-05-20T19:02:23.750859",
+    "query": "cosmin",
+    "results_count": 1,
+    "content_filters": [],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1"
+    ],
+    "invalid_paths": []
+  },
+  {
+    "timestamp": "2025-05-20T19:02:30.363917",
+    "query": "calculator",
+    "results_count": 0,
+    "content_filters": [],
+    "searched_paths": [
+      "D:\\SoftwareDesign_Iteartion1_LocalFileSeachSystem\\src\\app\\be_django\\be_django\\searchingDir1"
+    ],
+    "invalid_paths": []
   }
 ]

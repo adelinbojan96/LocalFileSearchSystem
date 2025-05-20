@@ -2,16 +2,16 @@ import base64
 
 from django.http import JsonResponse
 from rest_framework import status
-from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from .serializer import FileSerializer
 from .indexing import index_files, extract_path_filters, extract_content_filters
 from .database_handling import *
 from .report_creator import update_file_json, update_file_txt
 from datetime import datetime
 from .search_history import *
 logger = logging.getLogger(__name__)
+from .caching_proxy import SearchEngineProxy
+search_proxy = SearchEngineProxy(lambda *args, **kwargs: None)
 
 original_dir = r"D:\SoftwareDesign_Iteartion1_LocalFileSeachSystem\src\app\be_django\be_django\searchingDir1"
 @api_view(['POST'])
@@ -29,10 +29,7 @@ def search_file(request):
         content_filters = extract_content_filters(raw_query)
         clean_search_term = re.sub(r'(path|content):\S+', '', raw_query).strip()
 
-        directories = (
-            path_filters if path_filters
-            else [original_dir]
-        )
+        directories = path_filters if path_filters else [original_dir]
 
         valid_directories = []
         invalid_directories = []
@@ -49,7 +46,16 @@ def search_file(request):
                 'invalid_paths': invalid_directories
             }, status=400)
 
-        try:
+        # proxy
+        cache_key = (
+            tuple(valid_directories),
+            clean_search_term,
+            exact_match,
+            tuple(content_filters) if content_filters else (),
+            json_format
+        )
+
+        def proxy_search():
             results = index_files(
                 src_filepaths=valid_directories,
                 search_term=clean_search_term,
@@ -57,21 +63,15 @@ def search_file(request):
                 content_filters=content_filters,
                 history_manager=history_manager
             )
-
             if results is None:
-                all_results = []
+                return []
             elif isinstance(results, dict):
-                all_results = [results]
+                return [results]
             else:
-                all_results = results
+                return results
 
-        except Exception as processing_error:
-            logger.error("Search processing failed: %s", processing_error, exc_info=True)
-            return JsonResponse({
-                'error': 'Error processing search',
-                'valid_paths': valid_directories,
-                'invalid_paths': invalid_directories
-            }, status=500)
+        search_proxy.real_search_func = lambda *_: proxy_search()
+        all_results = search_proxy.search(cache_key, exact_match, json_format)
 
         if json_format:
             update_file_json(all_results)
@@ -99,10 +99,7 @@ def search_file(request):
 
     except Exception as e:
         logger.error("Unexpected search error: %s", e, exc_info=True)
-        return JsonResponse({
-            'error': 'Internal server error',
-            'details': str(e)
-        }, status=500)
+        return JsonResponse({'error': 'Internal server error', 'details': str(e)}, status=500)
 
 @api_view(['GET'])
 def get_file_metadata(request, file_name):
