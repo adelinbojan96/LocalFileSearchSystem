@@ -166,6 +166,7 @@ def get_widget(request):
             'id_word':   row['id_word'],
             'word_name': row['word_name'],
             'image':     b64,
+            'description': row['description'],
         }
         return JsonResponse({'widget': widget_obj}, status=status.HTTP_200_OK)
 

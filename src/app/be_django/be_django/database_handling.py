@@ -122,7 +122,8 @@ def extract_widget(name):
                 return {
                     'id_word': row[0],
                     'word_name': row[1],
-                    'image': row[2]
+                    'image': row[2],
+                    'description': row[3],
                 }
             return None
     except Exception as e:

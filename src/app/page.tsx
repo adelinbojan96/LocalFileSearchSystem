@@ -21,7 +21,7 @@ export default function Home() {
   const [json_format, setJson_format] = useState(false);
   const [selectedFile, setSelectedFile] = useState<FileMetadata | null>(null);
   const [suggestions, setSuggestions] = useState<string[]>([]);
-  const [widget, setWidget] = useState<{ id_word: number; word_name: string; image: string } | null>(null);
+  const [widget, setWidget] = useState<{ id_word: number; word_name: string; image: string; description: string } | null>(null);
 
   const debounce = useCallback(<F extends (...args: any[]) => void>(func: F, delay: number) =>
   {
@@ -141,6 +141,9 @@ export default function Home() {
                       alt={widget.word_name}
                       className={styles.widgetImage}
                   />
+                  <p className={styles.widgetDescription}>
+                    {widget.description}
+                  </p>
                 </div>
             )}
             {suggestions.length > 0 && (
