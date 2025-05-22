@@ -51,6 +51,17 @@
   gap: 8px;
   z-index: 100;
 }
+.correctionSuggestion {
+  margin-top: 4px;
+  font-size: 14px;
+  color: #d4dc17;
+  cursor: pointer;
+  user-select: none;
+}
+.correctionLink {
+  text-decoration: underline;
+  font-weight: bold;
+}
 
 .widgetDescription {
   margin: 0;

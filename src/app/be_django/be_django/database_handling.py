@@ -105,6 +105,25 @@ def extract_file_from_db(file_name):
         logger.error("Database error in extract_file_from_db for file_name %s: %s", file_name, err, exc_info=True)
         return None
 
+def extract_all_files():
+    try:
+        files = FileInfo.objects.all()
+        return [
+            {
+                'filename': file.name,
+                'path': file.path,
+                'size': file.size,
+                'last_modified': file.last_modified,
+                'creation_time': file.creation_time,
+                'file_type': file.type,
+                'preview': file.preview,
+            }
+            for file in files
+        ]
+    except Exception as err:
+        logger.error("Database error in extract_all_files: %s", err, exc_info=True)
+        return []
+
 def extract_widget(name):
     try:
         with connection.cursor() as cursor:

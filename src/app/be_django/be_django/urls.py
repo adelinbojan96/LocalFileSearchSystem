@@ -10,4 +10,5 @@ urlpatterns = [
     path('api/files/<str:file_name>/', get_file_metadata, name='get_file_metadata'),
     path('api/suggestions/', get_suggestions, name='get_suggestions'),
     path('api/widgets/', get_widget, name='get_widget'),
+    path('api/corrections/', get_corrections, name='get_corrections'),
 ]

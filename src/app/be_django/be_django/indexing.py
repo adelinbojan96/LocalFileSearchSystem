@@ -55,7 +55,13 @@ def index_files(src_filepaths, search_term, exact_match, content_filters, histor
     # extract
     if exact_match:
         clean_name = re.sub(r'(path|content):\S+', '', search_term).strip()
-        results = exact_search(clean_name, content_filters)
+        raw = exact_search(clean_name, content_filters)
+        if raw is None:
+            results = []
+        elif isinstance(raw, dict):
+            results = [raw]
+        else:
+            results = list(raw)
     else:
         results = fulltext_search(search_term, content_filters)
 

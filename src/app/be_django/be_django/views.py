@@ -4,6 +4,7 @@ from django.http import JsonResponse
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+
 from .indexing import index_files, extract_path_filters, extract_content_filters
 from .database_handling import *
 from .report_creator import update_file_json, update_file_txt
@@ -11,6 +12,9 @@ from datetime import datetime
 from .search_history import *
 logger = logging.getLogger(__name__)
 from .caching_proxy import SearchEngineProxy
+from .spelling_corector import SpellingFacade
+from .database_handling import extract_all_files
+
 search_proxy = SearchEngineProxy(lambda *args, **kwargs: None)
 
 original_dir = r"D:\SoftwareDesign_Iteartion1_LocalFileSeachSystem\src\app\be_django\be_django\searchingDir1"
@@ -176,3 +180,21 @@ def get_widget(request):
             {'error': 'Internal server error'},
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
         )
+
+vocabulary = [os.path.splitext(file['filename'])[0] for file in extract_all_files()]
+spelling_facade = SpellingFacade(vocabulary, 0.65)
+
+@api_view(['GET'])
+def get_corrections(request):
+    raw_query = request.GET.get('q', '')
+
+    clean_terms = raw_query.strip().split()
+    corrected_terms = [
+        spelling_facade.correct(term) for term in clean_terms
+    ]
+
+    if corrected_terms == clean_terms:
+        return Response({'correction': None}, status=status.HTTP_200_OK)
+
+    corrected_query = ' '.join(corrected_terms)
+    return Response({'correction': corrected_query}, status=status.HTTP_200_OK)

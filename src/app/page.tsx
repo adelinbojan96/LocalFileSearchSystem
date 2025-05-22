@@ -22,6 +22,7 @@ export default function Home() {
   const [selectedFile, setSelectedFile] = useState<FileMetadata | null>(null);
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [widget, setWidget] = useState<{ id_word: number; word_name: string; image: string; description: string } | null>(null);
+  const [correction, setCorrection] = useState<string | null>(null);
 
   const debounce = useCallback(<F extends (...args: any[]) => void>(func: F, delay: number) =>
   {
@@ -49,6 +50,23 @@ export default function Home() {
     }
   }, []);
 
+  const fetchCorrection = useCallback(async (query: string) => {
+    if (query.length) {
+      try {
+        const { data } = await axios.get(
+            'http://localhost:8000/api/corrections/',
+            { params: { q: query } }
+        );
+        setCorrection(data.correction || null);
+      } catch {
+        setCorrection(null);
+      }
+    } else {
+      setCorrection(null);
+    }
+  }, []);
+
+
   const fetchWidget = useCallback(async (query: string) => {
     if (query.length > 0) {
       try {
@@ -66,13 +84,16 @@ export default function Home() {
     }
   }, []);
 
-  const debouncedFetch = useCallback(debounce(fetchSuggestions, 200), [debounce, fetchSuggestions]);
+  const debouncedFetchSuggestions = useCallback(debounce(fetchSuggestions, 200), [debounce, fetchSuggestions]);
+  const debouncedFetchCorrection  = useCallback(debounce(fetchCorrection, 300), [debounce, fetchCorrection]);
 
   const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setFileName(value);
-    debouncedFetch(value);
-  }, [debouncedFetch]);
+    debouncedFetchSuggestions(value);
+    debouncedFetchCorrection(value);
+
+  }, [debouncedFetchSuggestions, debouncedFetchCorrection]);
 
   const handleSearchClick = async () => {
     if (fileName) {
@@ -134,6 +155,19 @@ export default function Home() {
                 value={fileName}
                 onChange={handleInputChange}
             />
+            {correction && correction !== fileName && (
+                <div
+                    className={styles.correctionSuggestion}
+                    onClick={() => {
+                      setFileName(correction);
+                      setCorrection(null);
+                      setSuggestions([]);
+                    }}
+                >
+                  Correction suggestion:&nbsp;
+                  <span className={styles.correctionLink}>{correction}</span>
+                </div>
+            )}
             {widget && (
                 <div className={styles.widgetImageContainer}>
                   <img
