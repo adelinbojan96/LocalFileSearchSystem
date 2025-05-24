@@ -14,6 +14,7 @@ logger = logging.getLogger(__name__)
 from .caching_proxy import SearchEngineProxy
 from .spelling_corector import SpellingFacade
 from .database_handling import extract_all_files
+from .widget_package.widget_factory import widget_factory
 
 search_proxy = SearchEngineProxy(lambda *args, **kwargs: None)
 
@@ -77,6 +78,13 @@ def search_file(request):
         search_proxy.real_search_func = lambda *_: proxy_search()
         all_results = search_proxy.search(cache_key, exact_match, json_format)
 
+        context = {
+            'query': request.data.get('file_name', '').strip(),
+            'results': all_results,
+        }
+
+        active_widgets = widget_factory.create_widgets(context)
+
         if json_format:
             update_file_json(all_results)
         else:
@@ -94,6 +102,7 @@ def search_file(request):
 
         return JsonResponse({
             'results': all_results,
+            'widgets': active_widgets,
             'metadata': {
                 'searched_paths': valid_directories,
                 'invalid_paths': invalid_directories,
@@ -192,7 +201,7 @@ def get_corrections(request):
     corrected_terms = [
         spelling_facade.correct(term) for term in clean_terms
     ]
-
+    # print(corrected_terms)
     if corrected_terms == clean_terms:
         return Response({'correction': None}, status=status.HTTP_200_OK)
 

@@ -1,0 +1,54 @@
+.main {
+    padding: 24px;
+    max-width: 800px;
+    margin: 0 auto;
+    font-family: 'Consolas', monospace;
+    color: #fff;
+    background-color: #121212;
+}
+
+.backLink {
+    margin-bottom: 24px;
+    display: inline-block;
+    color: #7ab4f8;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.noDocs {
+    font-style: italic;
+    color: #bbb;
+}
+
+.section {
+    margin-bottom: 32px;
+}
+
+.section h2 {
+    margin-bottom: 8px;
+    color: #cbd5e1;
+    font-weight: 600;
+}
+
+.textPreview {
+    background: #1e1e1e;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+    border: 1px solid #333;
+    color: #ddd;
+    font-family: 'Consolas', monospace;
+}
+
+.binaryLink {
+    color: #4ea1ff;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.binaryLink:hover {
+    color: #1a73e8;
+}

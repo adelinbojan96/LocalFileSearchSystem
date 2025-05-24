@@ -1,0 +1,36 @@
+.main {
+    padding: 24px;
+    max-width: 800px;
+    margin: 0 auto;
+    font-family: 'Consolas', monospace;
+    color: #fff;
+    background-color: #121212;
+}
+
+.noDocs {
+    font-style: italic;
+    color: #bbb;
+}
+
+.section {
+    margin-bottom: 32px;
+}
+
+.section h2 {
+    margin-bottom: 8px;
+    color: #cbd5e1;
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.pathPreview {
+    background: #191919;
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-size: 13px;
+    color: #87e2f0;
+    word-break: break-all;
+    font-family: 'Consolas', monospace;
+    margin: 0;
+    border: 1px solid #222;
+}

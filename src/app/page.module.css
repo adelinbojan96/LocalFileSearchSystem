@@ -15,7 +15,13 @@
   gap: 32px;
   font-family: 'Consolas', sans-serif;
 }
+.page {
+  background-color: #0b0a0a;
+}
 
+body {
+  background-color: #0b0a0a;
+}
 .main {
   display: flex;
   flex-direction: column;
@@ -23,22 +29,22 @@
   gap: 32px;
   width: 100%;
   max-width: 600px;
+  margin: 0;
 }
 
-.main h1 {
-  font-family: 'Consolas', sans-serif;
+.main h1,
+.main .form-row label {
+  color: #fff;
+}
+.specialWidgetTitle {
+  cursor: pointer;
+  text-decoration: underline;
+  color: #6839c5;
 }
 .searchContainer {
   position: relative;
   width: 100%;
-  max-width: 300px;
-}
-
-.searchBarWithWidget {
-  display: flex;
-  align-items: center;
-  position: relative;
-  gap: 16px;
+  max-width: 500px;
 }
 
 .widgetImageContainer {
@@ -77,17 +83,6 @@
   max-height: 48px;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-}
-
-.searchBar {
-  padding: 8px 12px;
-  border-radius: 5px;
-  background-color: #f1ede9;
-  color: #3d2f24;
-  border: 1px solid #bdaea1;
-  font-size: 16px;
-  width: 100%;
-  margin-bottom: 4px;
 }
 
 .suggestionsDropdown {
@@ -130,7 +125,7 @@
   padding: 10px 20px;
   border-radius: 30px;
   width: 100%;
-  max-width: 300px;
+  max-width: 250px;
   background-color: #cbc4bb;
   color: rgb(43, 37, 37);
   border: none;

@@ -3,9 +3,6 @@
     --gray-alpha-200: rgba(var(--gray-rgb), 0.08);
     --gray-alpha-100: rgba(var(--gray-rgb), 0.05);
 
-    --button-primary-hover: #383838;
-    --button-secondary-hover: #f2f2f2;
-
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -14,8 +11,13 @@
     padding: 80px;
     gap: 32px;
     font-family: 'Consolas', sans-serif;
+}
+.page {
+    background-color: #0b0a0a;
+}
 
-    background-color: #001f3d;
+body {
+    background-color: #0b0a0a;
 }
 .main {
     display: flex;
@@ -24,10 +26,6 @@
     gap: 32px;
     width: 100%;
     max-width: 600px;
-}
-
-.main h1 {
-    font-family: var(--font-geist-sans);
 }
 
 .searchBar {
@@ -53,7 +51,7 @@
     font-size: 18px;
     cursor: pointer;
     margin-top: -15px;
-    font-family: "Consolas";
+    font-family: "Consolas", serif;
 }
 
 .searchButton:hover {
@@ -101,7 +99,7 @@
     cursor: pointer;
     margin-top: 10px;
     transition: background-color 0.3s ease;
-    font-family: "Consolas";
+    font-family: "Consolas", serif;
 }
 
 .downloadButton:hover {

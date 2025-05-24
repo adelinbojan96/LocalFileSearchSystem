@@ -20,7 +20,8 @@ def get_metadata(filepath):
 def get_file_preview(filepath):
     try:
         file_type = mimetypes.guess_type(filepath)[0]
-        if file_type and 'text' in file_type:
+        file_extension = os.path.splitext(filepath)[1].lower()
+        if (file_type and 'text' in file_type) or file_extension == '.log':
             with open(filepath, 'r', encoding='utf-8', errors='ignore') as f:
                 return f.read(500)
         return ''
