@@ -34,11 +34,15 @@ def exact_search(search_item, content_filters):
 
 def fulltext_search(search_query, content_filters, limit=50):
     try:
+
         with connection.cursor() as cursor:
             conditions = []
             params = []
 
             if search_query.strip():
+                conditions.append("name LIKE %s")
+                params.append(f"%{search_query}%")
+
                 conditions.append("MATCH(name, preview) AGAINST (%s IN NATURAL LANGUAGE MODE)")
                 params.append(search_query)
 
@@ -47,23 +51,27 @@ def fulltext_search(search_query, content_filters, limit=50):
                 params.append(f"%{term}%")
 
             sql = """
-                SELECT
-                    name, path, size, last_modified, creation_time, type, preview
-                FROM file_info
+                SELECT name, path, size, last_modified, creation_time, type, preview
+                  FROM file_info
             """
             if conditions:
-                sql += " WHERE " + " AND ".join(conditions)
+                sql += " WHERE " + " OR ".join(conditions)
             sql += " LIMIT %s;"
             params.append(limit)
 
             cursor.execute(sql, params)
-            return [
-                dict(zip([col[0] for col in cursor.description], row))
-                for row in cursor.fetchall()
-            ]
+            rows = cursor.fetchall()
+
+            columns = [col[0] for col in cursor.description]
+            results = [dict(zip(columns, row)) for row in rows]
+
+            return results
+
     except Exception as e:
         logger.error("Full-text search failed: %s", e, exc_info=True)
         return []
+
+
 
 def insert_file_to_db(filepath, metadata):
     try:

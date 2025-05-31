@@ -51,16 +51,13 @@ def search_file(request):
                 'invalid_paths': invalid_directories
             }, status=400)
 
-        # proxy
-        cache_key = (
+        proxy_query = (
             tuple(valid_directories),
             clean_search_term,
-            exact_match,
-            tuple(content_filters) if content_filters else (),
-            json_format
+            tuple(content_filters) if content_filters else ()
         )
 
-        def proxy_search():
+        def proxy_search(query, ex_flag, jf_flag):
             results = index_files(
                 src_filepaths=valid_directories,
                 search_term=clean_search_term,
@@ -75,11 +72,12 @@ def search_file(request):
             else:
                 return results
 
-        search_proxy.real_search_func = lambda *_: proxy_search()
-        all_results = search_proxy.search(cache_key, exact_match, json_format)
+        search_proxy.real_search_func = proxy_search
+
+        all_results = search_proxy.search(proxy_query, exact_match, json_format)
 
         context = {
-            'query': request.data.get('file_name', '').strip(),
+            'query': raw_query,
             'results': all_results,
         }
 
@@ -148,10 +146,10 @@ def restart_database(request):
 @api_view(['GET'])
 def get_suggestions(request):
     query = request.GET.get('q', '').lower()
-    print(query)
+    # print(query)
     try:
         popular_terms = history_manager.get_popular_terms(limit=50)
-        print(popular_terms)
+        # print(popular_terms)
         suggestions = [
             term for term, count in popular_terms
             if query in term
